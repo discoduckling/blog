@@ -3,8 +3,7 @@ import Link from "next/link";
 
 const NavBarLink = props => {
   const { text, selected, color, to } = props;
-  const navPrefix = process.env.BACKEND_URL;
-  const navTo = to ? navPrefix + '/' + to : navPrefix + "/";
+  const navTo = to ?  to : "/";
   const linkText = (
     <span
       style={{
