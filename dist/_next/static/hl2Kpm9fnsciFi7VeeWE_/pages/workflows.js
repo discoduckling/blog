@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[9],{"7Ue7":function(n,o,e){"use strict";e.r(o);var w=e("q1tI"),t=e.n(w),i=e("nogs"),u=t.a.createElement;o.default=function(){return u(i.a,{pageTitle:"How To's"},u("div",null,"Workflows"))}},NVBM:function(n,o,e){(window.__NEXT_P=window.__NEXT_P||[]).push(["/workflows",function(){return e("7Ue7")}])}},[["NVBM",0,2,1,3]]]);

@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[8],{D85t:function(n,t,e){(window.__NEXT_P=window.__NEXT_P||[]).push(["/projects",function(){return e("RHEb")}])},RHEb:function(n,t,e){"use strict";e.r(t);var o=e("q1tI"),c=e.n(o),i=e("nogs"),r=c.a.createElement;t.default=function(){return r(i.a,{pageTitle:"Projects"},r("div",null,"Projects"))}}},[["D85t",0,2,1,3]]]);

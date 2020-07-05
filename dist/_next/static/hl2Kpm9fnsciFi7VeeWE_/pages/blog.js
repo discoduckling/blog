@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[6],{BR8T:function(n,o,i){(window.__NEXT_P=window.__NEXT_P||[]).push(["/blog",function(){return i("YbiN")}])},YbiN:function(n,o,i){"use strict";i.r(o);var t=i("q1tI"),e=i.n(t),u=i("nogs"),w=e.a.createElement;o.default=function(){return w(u.a,{pageTitle:"Blog"},w("div",null,"Blogs"))}}},[["BR8T",0,2,1,3]]]);
