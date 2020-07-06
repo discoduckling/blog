@@ -13,9 +13,16 @@ const OverviewLayout = props => {
       }}
     >
       <NavBox />
-      <div style={{ padding: "0px 45px" }}>
+      <div style={{ padding: "0px 45px", flexGrow: 1 }}>
         <PageTitle text={pageTitle} />
-        <div style={{ marginTop: 60, paddingLeft: 50 }}>{props.children}</div>
+        <div
+          style={{
+            marginTop: 60,
+            paddingLeft: 50,
+          }}
+        >
+          <div style={{ maxWidth: 800 }}>{props.children}</div>
+        </div>
       </div>
     </div>
   );
