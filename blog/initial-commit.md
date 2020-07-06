@@ -15,14 +15,14 @@ a way of learning and solidifying new procedures. I'm not sure why
 this phrase is only used in the context of medical residencies because 
 it's really applicable for learning anything new. 
 
-I started realizing that I would take time to learn new tools
-and frameworks outside of work, and a bit of time would pass
+I started realizing that I would learn new tools
+and libraries outside of work, and a bit of time would pass
 before I would get an opportunity to use my new skills at work.
 That meant there was a gap between learning and actually using any new
 concepts. Part of my goal with this site is to practice new concepts to 
 cement them in my mind before I forget them. One thing I know that
 works for me is not only making a practice project to test out
-new concepts, but also to explain it in writing, this is where the "teach one"
+new concepts, but also explaining what I learned in writing, this is where the "teach one"
 piece comes into play.
 
 In addition to using this platform as a public repository for my
@@ -32,5 +32,8 @@ have worked for me. I started realizing that I keep repeating
 steps for scaffolding and initializing projects, and I've often
 been asked about some of these workflows at work. Perhaps someone
 else would benefit from some of these workflows rather than having to 
-reinvent a wheel that's alraedy been...reinvented hudnreds of times
-already.
+reinvent a wheel that's been "reinvented" hundreds of times
+already. By integrating workflows into a discussion on tools or patterns,
+I think it makes it easier to understand what a new concept can add to 
+a project. The workflow serves as context for this new, weird thing, and 
+context makes it easier to understand why something works the way it does.
