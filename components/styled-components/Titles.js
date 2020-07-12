@@ -1,5 +1,6 @@
 import React from "react";
 import Colors from "../colors";
+import Link from "next/link";
 
 export const PageTitle = props => {
   const { text } = props;
@@ -33,15 +34,18 @@ export const SubTitle = props => {
 };
 
 export const PostTitle = props => {
-  const { text } = props;
+  const { text, href, as } = props;
   return (
-    <div
-      style={{
-        fontSize: 28,
-        marginBottom: 14
-      }}
-    >
-      {text}
-    </div>
+    <Link href={href} as={as}>
+      <div
+        style={{
+          fontSize: 28,
+          marginBottom: 14,
+          cursor: "pointer"
+        }}
+      >
+        {text}
+      </div>
+    </Link>
   );
 };

@@ -1,8 +1,7 @@
 import React from "react";
-import Truncate from "react-truncate";
 
 const BlurbText = props => {
-  const { text, lines } = props;
+  const { text } = props;
   return (
     <div
       style={{
@@ -10,9 +9,7 @@ const BlurbText = props => {
         height: "100%"
       }}
     >
-      <Truncate lines={lines} ellipsis={<span>...</span>}>
-        {text}
-      </Truncate>
+      {text}
     </div>
   );
 };
