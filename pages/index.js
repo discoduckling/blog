@@ -1,20 +1,23 @@
 import OverviewLayout from "../components/page-layouts/OverviewLayout";
 import React from "react";
-import { getSortedPostsData } from "../lib/blog-posts";
+import { getSortedPostsData } from "../lib/utils";
 import PostOverview from "../components/styled-components/PostOverview";
 
 const Home = props => {
-  const { allPostsData } = props;
+  const { posts } = props;
   return (
     <OverviewLayout pageTitle={"Recent Posts"}>
       <div>
-        {allPostsData.map(post => (
+        {posts.map(post => (
           <PostOverview
             id={post.id}
             title={post.title}
             date={post.date}
             text={post.blurb}
             key={post.title}
+            postType={post.postType}
+            pid={post.pid}
+            fileName={post.fileName}
           />
         ))}
       </div>
@@ -23,10 +26,10 @@ const Home = props => {
 };
 
 export async function getStaticProps() {
-  const allPostsData = await getSortedPostsData();
+  const allPostsData = getSortedPostsData();
   return {
     props: {
-      allPostsData
+      posts: allPostsData
     }
   };
 }
