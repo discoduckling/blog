@@ -1,0 +1,76 @@
+---
+title: 'NextJS Workflow Part 1: Design'
+date: '2020-07-13'
+blurb: 'Putting together a design for a project makes is the first step in organizing it. Investing in the UI design can save time in the long run as well as ensure your project will look as good as you imagine it will.'
+layout: 'BlogPostLayout' 
+---
+
+<div style={{color: 'blue'}}>Building a NextJS Blog: Part 1</div>
+
+It can be overwhelming to figure out where to start when putting together a project like this,
+so a good first step is to start with organizing your project. In this case, I started with
+putting together a UI mockup of how I wanted this blog to look. Putting together a UI mockup
+helps organize the project by:
+* figuring out which components should be reusable
+* how routing should behave
+* giving me time and space to focus on aesthetics, which I can use as a reference later while coding
+
+Separating the project into phases helps isolate each of the dev processes. For instance,
+while working on a design (in Sketch, Figma, etc) gives the developer a chance to focus
+just on an app's aesthetics as well as a way to set expectations on how it should behave.
+Thinking of the design at a high level like this can help ensure that your app flows
+in an intuitive way because you're taking the perspective of a user during this phase.
+
+## How I designed my components
+
+import CenteredImage from "../../components/styled-components/CenteredImage"
+
+<CenteredImage caption={"A screenshot of my Recent Posts page sketch"}>
+    <img src='/next-js-dev-part-1/recent-posts.png' alt='recent posts screenshot' width='500px'/>
+</CenteredImage>
+
+I used [Sketch](https://www.sketch.com/) ($99/year as of this post) to develop my mockups, but some other options are [Figma](https://www.figma.com/)
+which has a free tier, and [Balsamiq](https://balsamiq.com/). 
+
+Breaking the design I had in my head down into components helped me think about how I would organize my code.
+For instance, if I found myself copying and pasting a component in my Sketch mockup, I knew it would be reusable.
+The manual modifications I would make to my copy/pasted element represent the data I would supply to my reusable
+component as a prop.
+
+## Thinking ahead and routing considerations
+In addition to thinking about what components you will need in your blog, developing the mockup can clear up
+ideas around routing. For instance, I know that in addition to my "Recent Posts" page, I know I want to show
+all of my blog posts on a page with the title "Blog", and I want to do the same on a "Projects" page.
+
+<CenteredImage caption={"My other two pages from my sketch mockup"}>
+    <img src='/next-js-dev-part-1/blog-screenshot.png' alt='blog posts screenshot' width='500px'/>
+    <img src='/next-js-dev-part-1/projects-screenshot.png' alt='projects page screenshot' width='500px'/>
+</CenteredImage>
+
+This means that at _minimum_, I need 3 paths with static routes:
+1. `/` or my main index/home page
+2. `/blog` for my blog index page
+3. `/projects` for my projects index page
+
+### Static vs dynamic routes
+I mentioned that these are _static_ routes. What do I mean by that? Static routes are routes that don't
+need a parameter of any kind. There is only one "blog index". Compare this to a _dynamic_ route, which would
+take a parameter of some kind. For instance, each blog page might have a route with the structure `/blog/[id]` where
+the `id` parameter specifies which blog page I want to access. For instance, going to `/blog/my-first-blog-post` should
+route to a page with the id `my-first-blog-post`.
+
+## Trust me, this step is worth it
+First of all, this step is supposed to be _fun_ as well as satisfying. The way your blog or app looks is the first impression
+people will get from it. Having a cohesive and polished design gives the impression that you take your
+app seriously. You may spend hours trying to make things work under the hood, so why not reflect this effort
+on the surface by having a consistent and clean aesthetic?
+
+Creating a mockup is like creating a map for your project. When you start to understand how NextJS works,
+having a mockup like this can help apply some context to the NextJS functionality that you'll learn about. 
+All of the reputable static site generators have tutorials to guide a user through the setup process, but 
+they're all a bit nuanced. It can be difficult to understand which parts you need to pay attention to,
+or why the developers of the project added a specific feature to their framework. Being able to reframe
+the concepts from the docs or the tutorial project in terms of your own project can help solidify your understanding
+of the static site generator you choose to go with.
+
+
