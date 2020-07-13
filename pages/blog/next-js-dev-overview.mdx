@@ -1,0 +1,56 @@
+---
+title: 'Getting started with NextJS'
+date: '2020-07-12'
+blurb: "While it's still fresh in my mind, I wanted to write down my process for putting this blog togther. The 'easy' parts ended up taking much longer than what I though would be the harder parts." 
+layout: 'BlogPostLayout'
+tags:
+    -nextjs
+    -learning
+---
+<div style={{color: 'blue'}}>Building a NextJS Blog: Prequel </div>
+
+## Why?
+I have had a _lot_ of false starts with making a blog. First, I tried [Jekyll](https://jekyllrb.com/), then 
+[Hugo](https://gohugo.io/). I took a spin with [11ty](https://www.11ty.dev/)
+and had multiple tries with [GatsbyJS](https://www.gatsbyjs.org/). When I first started looking at Gatsby, it was still a very new project,
+so much so that I was apprehensive about committing my time to learning it. This is how long ago I started the process
+of trying to write a blog.
+
+My initial motivation for putting together a blog was to have a place to share data projects I was interested in 
+dabbling with. This was before I started a fulltime dev job, and I thought I'd have a lot of time on my hands.
+Needless to say, I did not have a lot of time on my hands after I started my current job. A few years in, I finally
+have some interesting things to say. I've developed some of my own patterns and workflows, and I have better idea
+about how what I thought disparate technologies actually work really well together (i.e. Docker, haha).
+
+Now that I had some actual content I felt I could use to fill up a site, I had more motivation to put together a blog,
+or at least try to _one last time_.
+
+## Why NextJS?
+This is a good question. I mentioned I had looked at a few other static site generators. I might do a more
+in-depth review of different static generators at a later time, but for now, my answer is just that NextJS was new
+and it kind of stuck. I particularly liked how easy it was to deploy using [Vercel](https://vercel.com/). One of my
+interests is to get a better intuition for deployment, and since Vercel basically makes deployment seamless and transparent,
+I wanted to work with their workflow to develop my own at some point.
+
+On this note, I did find that different static site generators can offer you an opportunity to learn something
+specific to their system. For instance, Gatsby uses GraphQL, so developing your site with Gatsby might be worth it
+if you'd like to learn GraphQL in the process. 
+
+import InterSiteLink from "../../components/styled-components/InterSiteLink" 
+
+## The basic workflow I used
+1. <InterSiteLink text={'Develop a design for this blog: I used Sketch'} to={'/blog/next-js-dev-part-1'} />
+2. Work through the NextJS tutorial
+3. Make my own project using what I learned from the tutorial
+4. Initialize the project with [storybook](https://storybook.js.org/) to speed up component design
+5. Flesh out the next js scaffolding to work the way I wanted it to
+6. Deploy
+
+## How I've organized my posts
+A basic tenet of solving a problem or building something is to break it down into digestible parts. I think as a whole,
+a project like this can be confusing and overwhelming, but breaking it down into the steps I outlined can help you 
+not only make a blog, but also understand what's happening at each step. Understanding each step is...well...the point
+of a project like this. Most of my professional work is sequestered to one side of the project, i.e. the frontend, so 
+even I stood to learn something from working on this project. A lot of thought has been put into these frameworks
+by their creators, and understanding what's going on under the hood can really unlock the potential of technologies
+like NextJS.
