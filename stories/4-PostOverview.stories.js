@@ -1,6 +1,6 @@
 import React from "react";
 import PostOverview from "../components/styled-components/PostOverview";
-import sampleText from "./sample-data/sampleText";
+import { blurbText } from "./sample-data/sampleText";
 import { TagNames } from "../components/tag-links";
 
 export default {
@@ -13,7 +13,7 @@ export const RecentPost = () => {
     <PostOverview
       title={"My most recent post"}
       date={"13 May 2020"}
-      text={sampleText}
+      text={blurbText}
       tags={[TagNames.DOCKER, TagNames.LEARNING]}
     />
   );
@@ -26,13 +26,13 @@ export const MultiplePosts = () => {
         <PostOverview
           title={"My most recent post"}
           date={"13 May 2020"}
-          text={sampleText}
+          text={blurbText}
           tags={[TagNames.AWS, TagNames.PYTHON, TagNames.JAVASCRIPT]}
         />
         <PostOverview
           title={"My most recent post"}
           date={"13 May 2020"}
-          text={sampleText}
+          text={blurbText}
           tags={[
             TagNames.REACT,
             TagNames.PYTHON,

@@ -8,6 +8,7 @@ export const PageTitle = props => {
     <span
       style={{
         fontSize: 54,
+        lineHeight: "75px",
         borderBottom: "3px solid black",
         width: "100%",
         paddingBottom: 5
