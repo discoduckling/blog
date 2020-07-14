@@ -1,8 +1,10 @@
 import React from "react";
-import NavBox from "../styled-components/nav-elements/NavBox";
+import NavBox, { NavMenu } from "../styled-components/nav-elements/NavBox";
 import { PageTitle } from "../styled-components/Titles";
 import styled from "@emotion/styled";
-import { device } from "../media-query-breakpoints";
+import { device, size } from "../media-query-breakpoints";
+import { useMediaQuery } from "react-responsive";
+import Colors from "../colors";
 
 const InnerLayout = styled.div`
   font-family: Helvetica, sans-serif;
@@ -14,7 +16,6 @@ const InnerLayout = styled.div`
 
 const ContentContainer = styled.div`
   flex-grow: 1;
-  text-align: center;
   padding: 10px 10px;
   @media ${device.tablet} {
     text-align: left;
@@ -25,24 +26,35 @@ const ContentContainer = styled.div`
 
 const ContentBody = styled.div`
   text-align: left;
-  margin-top: 60px;
+  margin-top: 20px;
   @media ${device.tablet} {
-    padding-left: 50;
+    padding-left: 50px;
+    margin-top: 60px;
   }
 `;
 
 const OverviewLayout = props => {
+  const isTablet = useMediaQuery({ minWidth: size.tablet });
   const { pageTitle } = props;
   return (
-    <InnerLayout>
-      <NavBox />
-      <ContentContainer>
-        <PageTitle text={pageTitle} />
-        <ContentBody>
-          <div style={{ maxWidth: 800 }}>{props.children}</div>
-        </ContentBody>
-      </ContentContainer>
-    </InnerLayout>
+    <div
+      style={{
+        margin: -8,
+        backgroundColor: Colors.navBackground,
+        minHeight: "100vh"
+      }}
+    >
+      <NavMenu pageTitle={pageTitle} />
+      <InnerLayout>
+        <NavBox />
+        <ContentContainer>
+          {isTablet ? <PageTitle text={pageTitle} /> : null}
+          <ContentBody>
+            <div style={{ maxWidth: 800 }}>{props.children}</div>
+          </ContentBody>
+        </ContentContainer>
+      </InnerLayout>
+    </div>
   );
 };
 
