@@ -1,7 +1,6 @@
 import React from "react";
 import NavBox from "../styled-components/nav-elements/NavBox";
 import { PageTitle } from "../styled-components/Titles";
-import { useMediaQuery } from "react-responsive";
 import styled from "@emotion/styled";
 import { device } from "../media-query-breakpoints";
 
