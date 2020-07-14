@@ -2,40 +2,48 @@ import React from "react";
 import NavBox from "../styled-components/nav-elements/NavBox";
 import { PageTitle } from "../styled-components/Titles";
 import { useMediaQuery } from "react-responsive";
+import styled from "@emotion/styled";
+import { device } from "../media-query-breakpoints";
+
+const InnerLayout = styled.div`
+  font-family: Helvetica, sans-serif;
+  @media ${device.tablet} {
+    display: flex;
+    padding: 30px;
+  }
+`;
+
+const ContentContainer = styled.div`
+  flex-grow: 1;
+  text-align: center;
+  padding: 10px 10px;
+  @media ${device.tablet} {
+    text-align: left;
+    padding: 0px 45px;
+    width: 60%;
+  }
+`;
+
+const ContentBody = styled.div`
+  text-align: left;
+  margin-top: 60px;
+  @media ${device.tablet} {
+    padding-left: 50;
+  }
+`;
 
 const OverviewLayout = props => {
   const { pageTitle } = props;
-  const isMobile = useMediaQuery({ maxWidth: 700 });
   return (
-    <div
-      style={{
-        display: "flex",
-        padding: isMobile ? 0 : 30,
-        fontFamily: "Helvetica, sans-serif",
-        flexDirection: isMobile ? "column" : "row"
-      }}
-    >
-      <NavBox isMobile={isMobile}/>
-      <div
-        style={{
-          padding: isMobile ? "15px 5px" : "0px 45px",
-            width: isMobile ? null : "60%",
-          flexGrow: 1
-        }}
-      >
-        <div style={{ textAlign: isMobile ? "center" : null }}>
-          <PageTitle text={pageTitle} />
-        </div>
-        <div
-          style={{
-            marginTop: 60,
-            paddingLeft: isMobile ? 10 : 50
-          }}
-        >
+    <InnerLayout>
+      <NavBox />
+      <ContentContainer>
+        <PageTitle text={pageTitle} />
+        <ContentBody>
           <div style={{ maxWidth: 800 }}>{props.children}</div>
-        </div>
-      </div>
-    </div>
+        </ContentBody>
+      </ContentContainer>
+    </InnerLayout>
   );
 };
 

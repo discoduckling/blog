@@ -1,32 +1,37 @@
-import React from "react";
 import NavBarLink from "./NavLink";
 import Colors from "../../colors";
 import Link from "next/link";
+import styled from "@emotion/styled";
+import { device } from "../../media-query-breakpoints";
 
+const BoxLayout = styled.div`
+  padding: 22px 31px;
+  border: 5px solid black;
+  width: auto;
+  height: auto;
+  @media ${device.tablet} {
+    width: 130px;
+    height: 269px;
+  }
+`;
+
+const LinkBox = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: space-around;
+  @media ${device.tablet} {
+    flex-direction: column;
+  }
+`;
 const NavBox = props => {
-  const { isMobile } = props;
   return (
-    <div
-      style={{
-        width: isMobile ? null : 130,
-        height: isMobile ? null : 269,
-        padding: "22px 31px",
-        border: "5px solid black"
-      }}
-    >
-      <div style={{ fontSize: 28 }}>
+    <BoxLayout>
+      <div style={{ fontSize: 28, marginBottom: 20 }}>
         <Link href={"/"}>
           <span style={{ cursor: "pointer" }}>Mitalee Desai</span>
         </Link>
       </div>
-      <div
-        style={{
-          marginTop: 20,
-          display: "flex",
-          flexDirection: isMobile ? "row" : "column",
-          justifyContent: isMobile ? "space-around" : null
-        }}
-      >
+      <LinkBox>
         <NavBarLink text={"Blog"} color={Colors.lightBlue} to={"/blog"} />
         <NavBarLink
           text={"Projects"}
@@ -38,15 +43,8 @@ const NavBox = props => {
           color={Colors.lightBlue}
           to={"/workflows"}
         />
-      </div>
-      <div
-        style={{
-          marginTop: isMobile ? 10 : 30,
-          display: "flex",
-          flexDirection: isMobile ? "row" : "column",
-          justifyContent: isMobile ? "space-around" : null
-        }}
-      >
+      </LinkBox>
+      <LinkBox>
         <NavBarLink
           text={"Github"}
           color={Colors.purple}
@@ -62,8 +60,8 @@ const NavBox = props => {
           color={Colors.purple}
           to={"https://twitter.com/_mitalee"}
         />
-      </div>
-    </div>
+      </LinkBox>
+    </BoxLayout>
   );
 };
 
