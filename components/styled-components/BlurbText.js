@@ -1,4 +1,5 @@
 import React from "react";
+import Colors from "../colors";
 
 const BlurbText = props => {
   const { text } = props;
@@ -6,7 +7,8 @@ const BlurbText = props => {
     <div
       style={{
         fontSize: 16,
-        height: "100%"
+        height: "100%",
+        color: Colors.navToolbar
       }}
     >
       {text}

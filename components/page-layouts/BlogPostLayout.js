@@ -1,6 +1,7 @@
 import OverviewLayout from "./OverviewLayout";
 import { SubTitle } from "../styled-components/Titles";
 import React from "react";
+import Colors from "../colors";
 
 const BlogPostLayout = frontMatter => {
   return ({ children: content }) => {
@@ -9,7 +10,7 @@ const BlogPostLayout = frontMatter => {
         <div style={{ display: "flex" }}>
           <SubTitle text={frontMatter.date} />
         </div>
-        <div>{content}</div>
+        <div style={{ color: Colors.navToolbar }}>{content}</div>
       </OverviewLayout>
     );
   };

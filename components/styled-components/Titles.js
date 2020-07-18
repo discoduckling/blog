@@ -8,9 +8,11 @@ export const PageTitle = props => {
     <span
       style={{
         fontSize: 54,
-        borderBottom: "3px solid black",
+        lineHeight: "75px",
+        borderBottom: `3px solid ${Colors.navToolbar}`,
         width: "100%",
-        paddingBottom: 5
+        paddingBottom: 5,
+        color: Colors.navToolbar
       }}
     >
       {text}
@@ -24,7 +26,8 @@ export const SubTitle = props => {
     <div
       style={{
         fontSize: 16,
-        color: Colors.subTitleGray,
+        color: Colors.navToolbar,
+        opacity: 0.7,
         marginBottom: 14
       }}
     >
@@ -41,7 +44,8 @@ export const PostTitle = props => {
         style={{
           fontSize: 28,
           marginBottom: 14,
-          cursor: "pointer"
+          cursor: "pointer",
+          color: Colors.navToolbar
         }}
       >
         {text}

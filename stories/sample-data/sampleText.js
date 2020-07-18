@@ -12,3 +12,5 @@ const text =
   "In iaculis, quam ut pellentesque finibus, ex lorem cursus felis, ut pharetra ligula ligula eget ante. Suspendisse tempor ligula quis vehicula dapibus. Vestibulum eget massa eget nibh aliquet luctus at eget est. Duis sit amet orci sit amet tortor semper volutpat. Donec porta quam maximus rhoncus sollicitudin. Quisque iaculis purus molestie felis accumsan eleifend. Nunc a lobortis sem. Etiam venenatis non justo a posuere. Suspendisse posuere fermentum porttitor. Donec eget magna tristique, aliquet dui ut, porta justo. Integer posuere, odio id mattis elementum, eros risus lacinia elit, id ultricies diam metus sit amet mauris. Vivamus dignissim, velit in pretium cursus, diam arcu tincidunt ligula, quis faucibus mi ipsum vel mauris. Nam tempus mollis ornare. Phasellus magna enim, facilisis eu malesuada non, rhoncus non ex. ";
 
 export default text;
+
+export const blurbText = "This is some blurb text i'm writing for a post. I talk about what I will talk about in the actual post, but only a summary of it."
