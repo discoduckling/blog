@@ -9,6 +9,6 @@ export default {
   lightBlue: "#0091FF",
   navFont: "#f69e7b",
   navToolbar: "#383e56",
-  navBackground: "#eedad1",
+  navBackground: "#fff",
   navSubtitle: "#d4b5b0"
 };

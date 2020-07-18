@@ -5,7 +5,6 @@ import PostOverview from "../components/styled-components/PostOverview";
 
 const Home = props => {
   const { posts } = props;
-  console.log(posts)
   return (
     <OverviewLayout pageTitle={"Recent Posts"}>
       <div>
