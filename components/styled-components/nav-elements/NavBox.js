@@ -162,6 +162,7 @@ export const NavMenu = props => {
           justifyContent: "center",
           fontSize: 20,
           position: "fixed",
+          zIndex: 100,
           width: "100%"
         }}
       >

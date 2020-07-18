@@ -23,7 +23,7 @@ ul {
     padding-bottom: 1rem;
     -webkit-overflow-scrolling: touch;
     background-color: transparent;
-    overflow: initial;
+    overflow: auto;
 }
 
 .token {
@@ -32,9 +32,6 @@ ul {
 
 p > code,
 li > code {
-    /*background: rgb(1, 22, 39);*/
-    /*color: rgb(214, 222, 235);*/
-    /*padding: 0.4em 0.3rem;*/
     background: rgb(244, 243, 250) none repeat scroll 0% 0%;
     padding: 2px 4px;
     border-radius: 3px;
@@ -80,3 +77,4 @@ gatsby-highlight > code[class*="language-"],
     width: calc(1.2em - 4px);
     left: -2px;
 }
+
