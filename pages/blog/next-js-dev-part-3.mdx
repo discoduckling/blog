@@ -1,0 +1,420 @@
+---
+title: 'NextJS Workflow Part 3: Setting Up the Project'
+date: '2020-07-19'
+blurb: "It's finally time to start our project. While the NextJS tutorial provides a comprehensive example of how to set
+up a project, I found that the setup I came up with varied slightly from the tutorial. In retrospect, these steps make total
+sense and are not difficult to understand, but it did take a while to figure out how to set up my project the way I 
+wanted to."
+layout: 'BlogPostLayout' 
+---
+
+It's finally time to get started on the actual project! The [NextJS](https://nextjs.org/docs/getting-started) docs are pretty comprehensive so I won't go
+too deep into all of the config options available. I'll focus on the steps I took to set up this site.
+
+## 1. Initialize the project directory
+Once in the  directory where the project will live, run the NextJS command to initialize a NextJS project:
+```shell script
+npx create-next-app
+# or
+yarn create next-app
+```
+The above was taken directly from the "Getting Started" section of the NextJS docs. They outline steps for a manual setup
+as well, but the automatic method worked for me and I recommend using it.
+
+As part of the initialization process, the script will ask you for a project name (I called mine `example-blog`). This will
+be the name of the directory that will hold your project. Then, the script will ask if it should use a default template
+or an example project from the Next.js repo. For this project, I will use the default template because I want to build
+most of it from the base layer.
+
+The script will run through the rest of the initialization steps on its own, and will output instructions at the very
+end on how to run your project:
+```shell script
+cd example-blog
+yarn dev
+```
+So let's do that.
+
+import CenteredImage from "../../components/styled-components/CenteredImage"
+
+<CenteredImage caption={"The basic starter home page"}>
+    <img src='/next-js-dev-part-3/basic_starter_index_page.png' alt='basic home page' width='500px'/>
+</CenteredImage>
+
+So far, so good.
+
+## 2. Setting up the project file structure
+Open up the project in an IDE and take a look at the default project structure.
+```text
+.
+├── README.md
+├── node_modules
+├── package.json
+├── pages
+│   ├── api
+│   │   └── hello.js
+│   └── index.js
+├── public
+│   ├── favicon.ico
+│   └── vercel.svg
+└── yarn.lock
+```
+
+As I mentioned in my previous post, NextJS bases its routing structure off of the file structure of the `pages/` 
+subdirectory. Plus, NextJS assumes that it should render the file at the `pages/index.js` when a user navigates
+to the `/` route (or the site's home page). 
+
+Editing the `index.js` page will change what's displayed on the site's current home page. So let's try that. Open up
+`pages/index.js` and replace all of the text with 
+```js
+import React from "react";
+
+const Home = (props) => {
+    return <div>This is my home page!</div>
+}
+
+export default Home;
+```
+
+Now, the home page should look like this:
+<CenteredImage caption={"The `/` after a basic edit."}>
+    <img src='/next-js-dev-part-3/hello_world_home.png' alt='edited home page' width='500px'/>
+</CenteredImage>
+
+For now, the simplest way to think about the static route pages is as React components. For instance,
+`index.js` will have a default export, in this case we called that default export `Home`. This component
+is what will be displayed when `/` is accessed. This becomes a little more complicated when I go into
+the dynamically routed pages which is why I'm only focusing on the statically routes pages for now.
+
+### A refresher on the floorplan for this site
+In my previous post, I mentioned that I want to be able to navigate to the following routes:
+* `/`: the home page, where I will show my recent additions, which can include a mix of blog posts, projects, and workflows
+* `/blog`: this is where I'll show only posts that I've tagged as "blog" posts
+* `/projects`: here, I'll show any projects I've created (I haven't made any yet)
+* `/workflows`: one of the things I know I want to showcase on this site is a repository of workflows that I use
+in my dev work. I haven't exactly figured out how I want to structure those, but they will live here
+
+Now that I know how I want the site to behave, I can structure my project files to be mapped to these routes. NextJS
+will do this mapping behind the scenes, and if we get the project structure right, it should all work like charm.
+
+### Mapping my routes to a file structure
+As I outlined above, I know what statically-routed pages I want. NextJS will expect these pages to be available in the
+`pages/` subdirectory, just like the `index.js` file that was put there during the initialization step. So we can
+add a `js` file for each of these pages:
+```shell script
+cd pages
+touch blog.js projects.js workflows.js
+```
+
+Now, in the body of each of these `js` files, we have to add a default export that is a component that will be rendered
+when we navigate to each of these routes. The route "name" (i.e. `/projects` or `/blog`) will be generated based on the
+file name. Therefore, it's important to name the file the same name you expect to use in the url. Less important
+is the name of the component used as the default export in each of these files. Eventually, we will be using a
+shared layout between all of these components. For now, add this to the body of each of the files we just made:
+
+```js
+import React from "react";
+
+const Page = (props) => {
+    return <div>This is the "insert page name here" page</div>
+}
+
+export default Page;
+```
+
+Now, to test it out, navigate to `localhost:3000/blog`, `localhost:3000/projects`, or `localhost:3000/workflows`. You should see the text
+we included in the `Page` component we exported from the body of each of these files.
+
+### Nested routes
+I'm more than happy to give up my routing configuration to NextJS. This is particularly convenient when we start
+becoming interested in nested routes, i.e. `localhost:3000/blog/blog_post_1`. When NextJS sees a subdirectory in the
+`pages/` directory, it will know to use a nested route to render the files in the subdirectory. For instance,
+`pages/blog/blog_post_1.js` will be the source of content for the `/blog/blog_post1` route. To test this out,
+let's make a subdirectory called `blog` and add a file there. Then we can access the nested route to make sure routing
+is working the way we expect it to:
+First, make the subdirectory inside the `pages/` directory: 
+```shell script
+# inside pages/
+mkdir blog
+```
+Then, create the dummy file that we will use to render content at the nested route:
+```shell script
+touch blog/blog_post_1.js
+```
+
+Edit the contents of `blog_post_1.js` to this:
+```js
+import React from "react";
+
+const ExampleBlogPost = () => {
+    return <div>Example Blog Post</div>
+}
+
+export default ExampleBlogPost;
+```
+
+Finally, if we navigate to `/blog/blog_post_1`, we should see the text "Example Blog Post". It's underwhelming,
+but now we know that our file structure is being mapped to our site's route the way we expect it to.
+
+### (Optional) Setting up Prettier and ESLint
+I say this is optional, but I don't actually *believe* that. In my mind, using Prettier and ESLint is a necessity
+for any Javascript project. The following steps are what I use for any npm-initialized project. Since we've already
+started adding some React code, now would be a good time to implement code formatting into this project.
+
+Start by creating `.prettier.js` and `.eslintrc.js` files in the root of your project.
+```shell script
+# from the project root
+touch .prettierrc.js .eslintrc.js
+```
+
+Then, add the config info to each of these files. These will
+be exported from the files to be used by the parsers we will add:
+`.prettierrc.js`
+```js
+module.exports = {
+    arrowParens: "avoid",
+    parser: "babel",
+    trailingComma: "none",
+    singleQuote: false
+};
+```
+`.eslintrc.js`
+```js
+module.exports = {
+    extends: "react-app",
+    plugins: ["prettier"],
+    rules: {
+        "prettier/prettier": "error"
+    }
+};
+```
+
+Next, we need to install the necessary packages to make
+our code formatting work:
+```shell script
+npm install --save-dev prettier eslint-plugin-prettier
+```
+
+The last step for prettier + eslint setup will be to add
+eslint config information to the project's `package.json`:
+```json
+"eslintConfig": {
+    "extends": "react-app"
+}
+```
+
+Finally, to run prettier on a file, I open it up in my IDE (I 
+use Webstorm) and run `⌘ + ⌥ + ⇧ + P`, and I breathe a sigh of 
+relief as my slightly ugly code gets prettified.
+
+## 2. Injecting props
+The site we're working on isn't particularly interesting right now. Take, for instance,
+the `/blog`, `/projects`, and `/workflows` routes. They all display
+the same content: `This is the "insert page name here" page`. The `insert page name here` would be a great place
+to insert some dynamic information! In this case, it would be great to be able to get the page name from
+props sent to the page. However, we don't use redux in this project, so there is no central state, so to speak.
+As an alternative, NextJS tells us to create a function named `getStaticProps` in the file for the page
+we are trying to inject with props. For this project, I will be using static generation rather than server-side
+generation to pre-render my pages. The NextJS docs go into more detail on the difference between the two, but it is
+recommended to use static generation.
+
+This convention, creating a function named `getStaticProps` seems weird in the beginning, but its kind of like using
+`mapStateToProps` + the redux `connect()` function.
+
+To test this out, we can add this function to the end of the `pages/blog.js` file:
+```js {5,6,11-17}
+// blog.js
+import React from "react";
+
+const Page = (props) => {
+    const { title } = props;
+    return <div>This is the {title} page</div>
+}
+
+export default Page;
+
+export async function getStaticProps() {
+    return {
+        props: {
+            title: "blog"
+        }
+    };
+}
+``` 
+The highlighted lines are the ones that were changed to bring in props to the default export from `blog.js`.
+Comparing lines 5 and 14, we can see where to name a prop in the `getStaticProps` function and how it translates
+to the props received by the default export in this file. Although this is a trivial example (and in fact, using
+dynamic routes here might make some sense), it's good enough to illustrate how to get props into a statically
+generated page. Now, if we navigate to `/blog`, the text should read `This is the blog page`. Hopefully, you can
+start to see some patterns and how we can create reusable components to be used in these static pages. For instance,
+we can create a reusable component that takes the "title" as a prop, and the reuse that component in all of these
+static pages we've been working on.
+
+# Adding Content
+## Parsing MDX
+This next step ended up taking me much longer than I thought it would because I didn't understand how
+data from markdown files got passed to a page with a dynamic route. Here's a breakdown of the steps I'll go through
+to get this project working with `.mdx` files.
+1. create some blog posts for testing
+2. set up configuration to work with `.mdx` files
+3. make a layout that will be used for wrapping the content from `.mdx` files. I'll be focused on "blog" posts.
+6. connect `.mdx` files to our layout wrapper
+
+These are a lot of steps, and this is easily the hairiest part of this project. This process reminds me of setting up
+redux, because it's hard to figure out what the linear path is. Do we create sample data first? Or do we set up the
+infrastructure we need to parse the sample data? The steps I outlined above were *not* the steps I actually used when
+I was setting up this site because I was just throwing stuff at the wall to get my `.mdx` parsed correctly. In retrospect,
+the steps outlined above are the ones I would take if I knew what I was doing. 
+
+## 3. Add sample blog posts to work with
+At this point, I'm not sure how the infrastructure will work, but I know how I want it to work.
+* the "starting point": add `.mdx` posts in the `pages/blog/` directory
+* the "ending point": the data from the `.mdx` files should be available via nested routes, i.e. the file `pages/blog/blog_post_1.md`
+should be shown when I navigate to the route `/pages/blog/blog_post_1`.
+
+Add a few sample blog post files to `pages/blog/`:
+```shell script
+# in pages/blog/
+touch first-post.mdx second-post.mdx third-post.mdx
+```
+And to each of these files, add some frontmatter and body content. Specifically, make sure there's a field of
+frontmatter data called `title`:
+```markdown
+---
+title: 'My first post'
+---
+
+This is where I talk about my first post.
+
+<div style={{ color: "orange", fontSize: 25 }}>Hello world!</div>
+```
+
+I've added some jsx code to the end of the file. This is the purpose of using `.mdx` instead of `.md` files. We can embed
+jsx code directly into these markdown files. 
+
+Right now, if you navigate to `/blog/first-post` (remember, NextJS takes the file name and uses it to make a nested
+route), you will be redirected to a 404 page. We haven't added any configuration to parse `.mdx` data yet, so it makes
+sense that this route isn't working yet. Hopefully, it will one day.
+
+As of this point, you should have three sample `.mdx`-formatted blog posts in the `pages/blog/` directory.
+
+## 4. Add configuration to work with mdx files 
+The easiest way to get your NextJS project working with mdx is to use `next-mdx-enhanced`. This is a plugin
+for NextJS that will parse the `.mdx` files in your project and it will also parse frontmatter from `.mdx`
+files.
+
+Install the package:
+```shell script
+npm install --save next-mdx-enhanced
+```
+
+Add the following to your `.gitignore` file:
+```gitignore
+...
+.mdx-data/
+...
+```
+
+Next, we need to add a `next.config.js` file to the project's root directory. The content of the config
+file should look like this:
+```js {4,5}
+const withMdxEnhanced = require('next-mdx-enhanced')
+
+module.exports = withMdxEnhanced({
+  layoutPath: 'components/page-layouts',
+  defaultLayout: false,
+  fileExtensions: ['mdx'],
+  remarkPlugins: [],
+  rehypePlugins: [],
+  extendFrontMatter: {
+    process: (mdxContent, frontMatter) => {},
+    phase: 'prebuild|loader|both',
+  },
+})({
+  pageExtensions: ['js', 'jsx', 'md', 'mdx']
+})
+```
+
+In line 4, the plugin needs to know where in the project structure it should look for the layouts it will use
+to wrap mdx content. In line 5, I've set the `defaultLayout` to false because I don't want the plugin to use
+a default layout when I don't specify one. 
+
+## 5. Add a layout for the blog posts we wrote
+Speaking of layouts, we need to make some. For now, we'll just make a file to hold this code, and we'll
+populate it later. Since I specified a directory for these layouts in `next.config.js`, let's make a
+directory and layout file at that location.
+
+From the project's root directory:
+```shell script
+mkdir components
+mkdir components/page-layouts
+touch components/page-layouts/BlogPostLayout.js
+```
+
+Now that the layout file (`BlogPostLayout.js`) has been created, we can edit it to accept the props
+that the `next-mdx-enhanced` plugin will inject into it. This is what the content of `BlogPostLayout.js`
+should look like after you edit it:
+```js {3,4}
+import React from "react";
+
+const BlogPostLayout = frontMatter => {
+  return ({ children: content }) => {
+    return (
+      <div>
+        <div style={{ color: "red" }}>{frontMatter.title}</div>
+        <div style={{ color: "green" }}>{content}</div>
+      </div>
+    );
+  };
+};
+
+export default BlogPostLayout;
+```
+The docs for `next-mdx-enhanced` are available [here](https://github.com/hashicorp/next-mdx-enhanced). 
+
+The docs say that the plugin provides a file's frontmatter data as a parameter to the default export from this layout.
+We will eventually connect this layout component to our mdx file, which is how the plugin will know to provide
+this parameter to this specific component. The plugin expects this export to return a function that will
+render the layout we are interested in using. *That* render function receives the content of the `.mdx` file
+as a prop named `children`.
+
+In this sample layout, the title should appear red, and the content should appear green. Additionally,
+we had inserted some jsx code into the `first-post.mdx` file. This text, `Hello World!`, should appear orange.
+
+Recap: 
+1. We configured the plugin we need to parse mdx
+2. We created a layout to use in our `.mdx` blog post files
+
+What's left to do:
+3. Connect this layout file to our `.mdx` blog post files
+4. Test it out
+
+## 6. Connect the `.mdx` files we created to the layout we want to use to render them
+To connect the `.mdx` files we created to the `BlogPostLayout.js` layout component, edit the frontmatter
+of the blog post files we created by adding the highlighted line:
+
+```markdown {3}
+---
+title: 'My first post'
+layout: 'BlogPostLayout' 
+---
+...
+```
+
+Here, we are telling `next-mdx-enhanced` which layout file we want to use (from the `components/page-layouts/` directory)
+as the layout for these `.mdx` files.
+
+Make sure to restart your server before testing out the nested routes. Changes to `next.config.js` require
+server restarts.
+
+Navigating to `localhost:3000/blog/first-post` should now show something like this:
+<CenteredImage caption={"`/blog/first-post` with mdx!"}>
+    <img src='/next-js-dev-part-3/mdx-test.png' alt='rendrered mdx' width='500px'/>
+</CenteredImage>
+
+You should also be able to navigate to `/blog/second-post` and `/blog/third-post` to see the content
+from `second-post.mdx` and `third-post.mdx` files. We have nested routing working, as well as mdx parsing!
+
+# Final thoughts on this section
+The `next-mdx-enhanced` plugin does a lot of work for us. It automatically parses the grey matter and the
+front matter of our `.mdx` posts. It makes it easy to specify a layout for individual `.mdx` files. And
+it makes it easy to inject front matter and grey matter into the layout components we define using React.

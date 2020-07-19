@@ -1,15 +1,3 @@
-// module.exports = {
-//   webpack: (config, { isServer }) => {
-//     // Fixes npm packages that depend on `fs` module
-//     if (!isServer) {
-//       config.node = {
-//         fs: 'empty'
-//       }
-//     }
-//
-//     return config
-//   }
-// }
 const images = require('remark-images')
 const emoji = require('remark-emoji')
 const withMdxEnhanced = require('next-mdx-enhanced')
@@ -27,19 +15,3 @@ module.exports = withMdxEnhanced({
 })({
   pageExtensions: ['js', 'jsx', 'md', 'mdx']
 })
-// const withMDX = require("@next/mdx")({
-//   extension: /\.(md|mdx)$/
-// });
-//
-// module.exports = withMDX({
-//   webpack: (config, { isServer }) => {
-//     // Fixes npm packages that depend on `fs` module
-//     if (!isServer) {
-//       config.node = {
-//         fs: "empty"
-//       };
-//     }
-//
-//     return config;
-//   }
-// });
