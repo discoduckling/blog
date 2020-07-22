@@ -16,7 +16,7 @@ const styles = {
     top: "30px"
   },
   bmBurgerBars: {
-    background: "#FA6400"
+    background: Colors.orange
   },
   bmBurgerBarsHover: {
     background: "#a90000"
@@ -62,7 +62,7 @@ const ExternalLink = props => {
   const { icon, to } = props;
   return (
     <div>
-      <a href={to} style={{ textDecoration: "none", color: "#FA6400" }}>
+      <a href={to} style={{ textDecoration: "none", color: Colors.orange }}>
         {icon}
       </a>
     </div>
@@ -73,7 +73,6 @@ const NavBarLink = ({ label, selected, to }) => {
   const linkText = (
     <span
       style={{
-        color: selected ? "white" : "black",
         cursor: "pointer"
       }}
     >
@@ -87,10 +86,15 @@ const NavBarLink = ({ label, selected, to }) => {
         font-family: "Mulish", sans-serif;
         padding: 5px 8px;
         border-radius: 3px;
-        background-color: ${selected ? "#FA6400" : "white"};
+        background-color: ${selected ? Colors.orange : "white"};
         color: ${selected ? "white" : "black"};
         visibility: hidden;
         margin-left: 60px;
+        :hover {
+          background-color: ${selected ? Colors.orange : "rgba(250, 100, 0, 0.5)"};
+          color: white;
+          transition: background-color .2s;
+        };
         @media ${device.tablet} {
           visibility: visible;
         }
@@ -115,7 +119,7 @@ const NavBarBody = styled.div`
 
 const MenuLink = ({ label, to, selected }) => {
   const linkText = (
-    <span style={{ color: selected ? "white" : "#FA6400", cursor: "pointer" }}>
+    <span style={{ color: selected ? "white" : Colors.orange, cursor: "pointer" }}>
       {label}
     </span>
   );
@@ -124,7 +128,7 @@ const MenuLink = ({ label, to, selected }) => {
       css={css`
         font-family: "Mulish", sans-serif;
         font-size: 30px;
-        background-color: ${selected ? "#FA6400" : null};
+        background-color: ${selected ? Colors.orange : null};
         margin-bottom: 30px;
         padding: 5px 12px;
         border-radius: 3px;

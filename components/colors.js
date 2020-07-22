@@ -10,5 +10,7 @@ export default {
   navFont: "#f69e7b",
   navToolbar: "#383e56",
   navBackground: "#fff",
-  navSubtitle: "#d4b5b0"
+  navSubtitle: "#d4b5b0",
+  greyBackground: "#f2f2f2",
+  highlightPurple: "#4130BF"
 };

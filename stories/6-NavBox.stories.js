@@ -6,7 +6,7 @@ export default {
   component: NavBar
 };
 
-export const NavbarHome = () => <NavBar selected={"/"} />;
-export const NavbarBlog = () => <NavBar selected={"/blog"} />;
-export const NavbarProjects = () => <NavBar selected={"/projects"} />;
-export const NavbarWorkflow = () => <NavBar selected={"/workflows"} />;
+export const NavbarHome = () => <NavBar selected={"Home"} />;
+export const NavbarBlog = () => <NavBar selected={"Blog"} />;
+export const NavbarProjects = () => <NavBar selected={"Projects"} />;
+export const NavbarWorkflow = () => <NavBar selected={"How To's"} />;

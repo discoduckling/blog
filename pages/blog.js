@@ -1,15 +1,15 @@
 import React from "react";
 import OverviewLayout from "../components/page-layouts/OverviewLayout";
 import { getSortedPostsData } from "../lib/utils";
-import PostOverview from "../components/styled-components/PostOverview";
+import { PostOverviewSmall } from "../components/styled-components/PostOverview";
 
 const BlogOverview = props => {
   const { posts } = props;
   return (
-    <OverviewLayout pageTitle={"Blog"}>
+    <OverviewLayout selected={"Blog"}>
       <div>
         {posts.map(post => (
-          <PostOverview
+          <PostOverviewSmall
             id={post.id}
             title={post.title}
             date={post.date}

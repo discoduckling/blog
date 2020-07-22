@@ -15,7 +15,7 @@ const ContentContainer = styled.div`
   padding: 10px 10px;
   @media ${device.tablet} {
     text-align: left;
-    padding: 0px 45px;
+    padding: 80px 45px;
     width: 60%;
   }
 `;
@@ -31,23 +31,15 @@ const ContentBody = styled.div`
 
 const OverviewLayout = props => {
   const isTablet = useMediaQuery({ minWidth: size.tablet });
-  const { pageTitle } = props;
+  const { selected } = props;
   return (
     <div
       style={{
-        backgroundColor: Colors.navBackground,
         minHeight: "100vh"
       }}
     >
-      <InnerLayout>
-        <NavBar selected={pageTitle} />
-        <ContentContainer>
-          {isTablet ? <PageTitle text={pageTitle} /> : null}
-          <ContentBody>
-            <div style={{ maxWidth: 800 }}>{props.children}</div>
-          </ContentBody>
-        </ContentContainer>
-      </InnerLayout>
+      <NavBar selected={selected} />
+      <div style={{ padding: "160px 120px" }}>{props.children}</div>
     </div>
   );
 };

@@ -1,6 +1,8 @@
+/** @jsx jsx */
 import React from "react";
 import Colors from "../colors";
-import Link from "next/link";
+import styled from "@emotion/styled";
+import { css, jsx } from "@emotion/core";
 
 export const PageTitle = props => {
   const { text } = props;
@@ -36,20 +38,25 @@ export const SubTitle = props => {
   );
 };
 
-export const PostTitle = props => {
-  const { text, href, as } = props;
+export const DateLabel = ({ text }) => {
   return (
-    <Link href={href} as={as}>
-      <div
-        style={{
-          fontSize: 28,
-          marginBottom: 14,
-          cursor: "pointer",
-          color: Colors.navToolbar
-        }}
+    <div>
+      <span
+        css={css`
+          font-size: 18px;
+          font-family: "Roboto", sans-serif;
+          border-bottom: 2px solid black;
+          padding-bottom: 7px;
+        `}
       >
-        {text}
-      </div>
-    </Link>
+        {text.toUpperCase()}
+      </span>
+    </div>
   );
 };
+
+export const PostTitle = styled.div`
+  font-family: "Roboto", sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+`;
