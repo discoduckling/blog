@@ -1,8 +1,10 @@
-/*html,*/
-/*body {*/
-/*    margin: 0;*/
-/*    padding: 0;*/
-/*}*/
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Mulish:wght@300&display=swap');
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
 
 /*html {*/
 /*    font-family: sans-serif;*/

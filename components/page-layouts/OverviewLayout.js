@@ -1,17 +1,13 @@
 import React from "react";
-import NavBox, { NavMenu } from "../styled-components/nav-elements/NavBox";
 import { PageTitle } from "../styled-components/Titles";
 import styled from "@emotion/styled";
 import { device, size } from "../media-query-breakpoints";
 import { useMediaQuery } from "react-responsive";
 import Colors from "../colors";
+import NavBar from "../styled-components/nav-elements/NavBox";
 
 const InnerLayout = styled.div`
   font-family: Helvetica, sans-serif;
-  @media ${device.tablet} {
-    display: flex;
-    padding: 30px;
-  }
 `;
 
 const ContentContainer = styled.div`
@@ -39,14 +35,12 @@ const OverviewLayout = props => {
   return (
     <div
       style={{
-        margin: -8,
         backgroundColor: Colors.navBackground,
         minHeight: "100vh"
       }}
     >
-      <NavMenu pageTitle={pageTitle} />
       <InnerLayout>
-        <NavBox />
+        <NavBar selected={pageTitle} />
         <ContentContainer>
           {isTablet ? <PageTitle text={pageTitle} /> : null}
           <ContentBody>

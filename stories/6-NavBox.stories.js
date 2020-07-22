@@ -1,9 +1,12 @@
 import React from "react";
-import NavBox from "../components/styled-components/nav-elements/NavBox";
+import NavBar from "../components/styled-components/nav-elements/NavBox";
 
 export default {
-  title: "NavBox",
-  component: NavBox
+  title: "NavBar",
+  component: NavBar
 };
 
-export const NavBoxOnHome = () => <NavBox />;
+export const NavbarHome = () => <NavBar selected={"/"} />;
+export const NavbarBlog = () => <NavBar selected={"/blog"} />;
+export const NavbarProjects = () => <NavBar selected={"/projects"} />;
+export const NavbarWorkflow = () => <NavBar selected={"/workflows"} />;

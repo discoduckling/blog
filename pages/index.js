@@ -6,7 +6,7 @@ import PostOverview from "../components/styled-components/PostOverview";
 const Home = props => {
   const { posts } = props;
   return (
-    <OverviewLayout pageTitle={"Recent Posts"}>
+    <OverviewLayout pageTitle={"Home"}>
       <div>
         {posts.map(post => (
           <PostOverview

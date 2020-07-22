@@ -1,80 +1,22 @@
-import React from "react";
+/** @jsx jsx */
 import Colors from "../../colors";
 import Link from "next/link";
 import styled from "@emotion/styled";
+import { jsx, css } from "@emotion/core";
 import { device } from "../../media-query-breakpoints";
 import { slide as Menu } from "react-burger-menu";
-import { GoQuote, GoProject, GoTasklist } from "react-icons/go";
 import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
-
-const NavBoxBody = styled.div`
-  visibility: hidden;
-  height: 0px;
-  width: 0px;
-  background-color: ${Colors.navToolbar};
-  padding: 22px 31px;
-  @media ${device.tablet} {
-    visibility: visible;
-    height: 300px;
-    width: 150px;
-  }
-`;
-
-const NavMenuBody = styled.div`
-  visibility: visible;
-  font-family: Helvetica, sans-serif;
-  @media ${device.tablet} {
-    visibility: hidden;
-  }
-`;
-
-const ExternalLinkBox = () => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-around",
-      marginTop: 50
-    }}
-  >
-    <ExternalLink icon={<FaGithub />} to={"https://github.com/discoduckling"} />
-    <ExternalLink
-      icon={<FaLinkedin />}
-      to={"https://www.linkedin.com/in/msmitalee/"}
-    />
-    <ExternalLink icon={<FaTwitter />} to={"https://twitter.com/_mitalee"} />
-  </div>
-);
-
-const NavBox = props => {
-  return (
-    <NavBoxBody>
-      <div style={{ fontSize: 28, marginBottom: 20 }}>
-        <Link href={"/"}>
-          <span style={{ cursor: "pointer", color: Colors.navFont }}>
-            Mitalee Desai
-          </span>
-        </Link>
-      </div>
-      <div>
-        <NavMenuItem text={"Blog"} to={"/blog"} icon={<GoQuote />} />
-        <NavMenuItem text={"Projects"} to={"/projects"} icon={<GoProject />} />
-        <NavMenuItem text={"How To"} to={"/workflows"} icon={<GoTasklist />} />
-      </div>
-      <ExternalLinkBox />
-    </NavBoxBody>
-  );
-};
 
 const styles = {
   bmBurgerButton: {
     position: "fixed",
     width: "20px",
     height: "20px",
-    left: "20px",
-    top: "17px"
+    right: "30px",
+    top: "30px"
   },
   bmBurgerBars: {
-    background: Colors.navFont
+    background: "#FA6400"
   },
   bmBurgerBarsHover: {
     background: "#a90000"
@@ -89,20 +31,26 @@ const styles = {
   bmMenuWrap: {
     position: "fixed",
     height: "100%",
-    width: 200
+    width: "100%",
+    top: 0
   },
   bmMenu: {
     background: Colors.navToolbar,
     padding: "2.5em 1.5em 0",
     fontSize: "1.15em",
-    overflowY: "hidden"
+    overflowY: "hidden",
+    top: "0"
   },
   bmMorphShape: {
     fill: "white"
   },
   bmItemList: {
     color: Colors.navFont,
-    padding: "0.8em"
+    padding: "0.8em",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
   },
   bmItem: {},
   bmOverlay: {
@@ -110,66 +58,196 @@ const styles = {
   }
 };
 
-const NavMenuItem = props => {
-  const { text, to, icon } = props;
-  const linkText = (
-    <span style={{ color: Colors.navFont, cursor: "pointer" }}>{text}</span>
-  );
-  return (
-    <div style={{ height: 40, display: "flex", alignItems: "center" }}>
-      {icon && (
-        <div style={{ opacity: 0.5, marginRight: 10, color: Colors.navFont }}>
-          {icon}
-        </div>
-      )}
-      <Link href={to}>{linkText}</Link>
-    </div>
-  );
-};
-
 const ExternalLink = props => {
   const { icon, to } = props;
   return (
     <div>
-      <a href={to} style={{ textDecoration: "none", color: Colors.navFont }}>
+      <a href={to} style={{ textDecoration: "none", color: "#FA6400" }}>
         {icon}
       </a>
     </div>
   );
 };
-export const NavMenu = props => {
-  const { pageTitle } = props;
+
+const NavBarLink = ({ label, selected, to }) => {
+  const linkText = (
+    <span
+      style={{
+        color: selected ? "white" : "black",
+        cursor: "pointer"
+      }}
+    >
+      {label}
+    </span>
+  );
   return (
-    <NavMenuBody>
-      <Menu styles={styles} disableAutoFocus>
-        <NavMenuItem
-          text={"Mitalee Desai"}
-          to={"/"}
-          style={{ marginBottom: 30 }}
-        />
-        <NavMenuItem text={"Blog"} to={"/blog"} icon={<GoQuote />} />
-        <NavMenuItem text={"Projects"} to={"/projects"} icon={<GoProject />} />
-        <NavMenuItem text={"How To"} to={"/workflows"} icon={<GoTasklist />} />
-        <ExternalLinkBox />
-      </Menu>
-      <div
-        style={{
-          backgroundColor: Colors.navToolbar,
-          color: Colors.navFont,
-          height: 60,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 20,
-          position: "fixed",
-          zIndex: 100,
-          width: "100%"
-        }}
-      >
-        <div style={{ width: "70%", textAlign: "center" }}>{pageTitle}</div>
-      </div>
-    </NavMenuBody>
+    <div
+      css={css`
+        font-size: 17px;
+        font-family: "Mulish", sans-serif;
+        padding: 5px 8px;
+        border-radius: 3px;
+        background-color: ${selected ? "#FA6400" : "white"};
+        color: ${selected ? "white" : "black"};
+        visibility: hidden;
+        margin-left: 60px;
+        @media ${device.tablet} {
+          visibility: visible;
+        }
+      `}
+    >
+      <Link href={to}>{linkText}</Link>
+    </div>
   );
 };
 
-export default NavBox;
+const NavBarBody = styled.div`
+  display: flex;
+  height: 80px;
+  align-items: center;
+  box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  position: fixed;
+  background-color: white;
+  z-index: 100;
+  justify-content: space-between;
+`;
+
+const MenuLink = ({ label, to, selected }) => {
+  const linkText = (
+    <span style={{ color: selected ? "white" : "#FA6400", cursor: "pointer" }}>
+      {label}
+    </span>
+  );
+  return (
+    <div
+      css={css`
+        font-family: "Mulish", sans-serif;
+        font-size: 30px;
+        background-color: ${selected ? "#FA6400" : null};
+        margin-bottom: 30px;
+        padding: 5px 12px;
+        border-radius: 3px;
+      `}
+    >
+      <Link href={to}>{linkText}</Link>
+    </div>
+  );
+};
+const NavBar = props => {
+  const { selected } = props;
+  return (
+    <div>
+      <div
+        css={css`
+          @media ${device.tablet} {
+            visibility: hidden;
+          }
+        `}
+      >
+        <Menu styles={styles} disableAutoFocus>
+          <MenuLink to={"/"} label={"Home"} selected={selected === "Home"} />
+          <MenuLink
+            to={"/blog"}
+            label={"Blog"}
+            selected={selected === "Blog"}
+          />
+          <MenuLink
+            to={"/projects"}
+            label={"Projects"}
+            selected={selected === "Projects"}
+          />
+          <MenuLink
+            to={"/workflows"}
+            label={"How To's"}
+            selected={selected === "How To's"}
+          />
+          <div
+            style={{
+              display: "flex",
+              width: 150,
+              justifyContent: "space-around"
+            }}
+          >
+            <ExternalLink
+              to={"https://twitter.com/_mitalee"}
+              icon={<FaTwitter />}
+            />
+            <ExternalLink
+              to={"https://github.com/discoduckling"}
+              icon={<FaGithub />}
+            />
+            <ExternalLink
+              to={"https://www.linkedin.com/in/msmitalee/"}
+              icon={<FaLinkedin />}
+            />
+          </div>
+        </Menu>
+      </div>
+      <NavBarBody>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <div
+            css={css`
+              width: 200px;
+              margin-left: 30px;
+              @media ${device.tablet} {
+                width: 106px;
+                margin-left: 80px;
+              }
+            `}
+          >
+            <Link href={"/"}>
+              <span
+                style={{
+                  fontSize: 20,
+                  fontFamily: "Fredoka One, cursive",
+                  cursor: "pointer"
+                }}
+              >
+                Mitalee Desai
+              </span>
+            </Link>
+          </div>
+          <NavBarLink
+            label={"Blog"}
+            selected={selected === "Blog"}
+            to={"/blog"}
+          />
+          <NavBarLink
+            label={"Projects"}
+            selected={selected === "Projects"}
+            to={"/projects"}
+          />
+          <NavBarLink
+            label={"How-To's"}
+            selected={selected === "How To's"}
+            to={"/workflows"}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            marginRight: 80,
+            width: 100,
+            justifyContent: "space-between"
+          }}
+        >
+          <ExternalLink
+            to={"https://twitter.com/_mitalee"}
+            icon={<FaTwitter />}
+          />
+          <ExternalLink
+            to={"https://github.com/discoduckling"}
+            icon={<FaGithub />}
+          />
+          <ExternalLink
+            to={"https://www.linkedin.com/in/msmitalee/"}
+            icon={<FaLinkedin />}
+          />
+        </div>
+      </NavBarBody>
+    </div>
+  );
+};
+
+export default NavBar;
