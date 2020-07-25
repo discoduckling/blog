@@ -1,8 +1,9 @@
 ---
-title: 'NextJS Workflow Part 1: Design'
+title: 'NextJS Part 1: Design'
 date: '2020-07-13'
 blurb: 'Putting together a design for a project makes is the first step in organizing it. Investing in the UI design can save time in the long run as well as ensure your project will look as good as you imagine it will.'
 layout: 'BlogPostLayout' 
+image_path: '/next-js-dev-part-1/nextjs_purple.png'
 ---
 
 <div style={{color: 'blue'}}>Building a NextJS Blog: Part 1</div>
@@ -26,7 +27,9 @@ in an intuitive way because you're taking the perspective of a user during this 
 import CenteredImage from "../../components/styled-components/CenteredImage"
 
 <CenteredImage caption={"A screenshot of my Recent Posts page sketch"}>
-    <img src='/next-js-dev-part-1/recent-posts.png' alt='recent posts screenshot' width='500px'/>
+    <img src='/next-js-dev-part-1/recent-posts.png' 
+        alt='recent posts screenshot' 
+        style={{maxWidth: '100%'}} />
 </CenteredImage>
 
 I used [Sketch](https://www.sketch.com/) ($99/year as of this post) to develop my mockups, but some other options are [Figma](https://www.figma.com/)
@@ -43,8 +46,7 @@ ideas around routing. For instance, I know that in addition to my "Recent Posts"
 all of my blog posts on a page with the title "Blog", and I want to do the same on a "Projects" page.
 
 <CenteredImage caption={"My other two pages from my sketch mockup"}>
-    <img src='/next-js-dev-part-1/blog-screenshot.png' alt='blog posts screenshot' width='500px'/>
-    <img src='/next-js-dev-part-1/projects-screenshot.png' alt='projects page screenshot' width='500px'/>
+    <img src='/next-js-dev-part-1/projects-screenshot.png' alt='projects page screenshot' style={{maxWidth: '100%'}}/>
 </CenteredImage>
 
 This means that at _minimum_, I need 3 paths with static routes:

@@ -1,8 +1,11 @@
-/*html,*/
-/*body {*/
-/*    margin: 0;*/
-/*    padding: 0;*/
-/*}*/
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Mulish:wght@300&family=Roboto:wght@900&display=swap');
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #F2F2F2;
+    font-family: "Mulish", sans-serif;
+}
 
 /*html {*/
 /*    font-family: sans-serif;*/
@@ -13,7 +16,7 @@ p {
     line-height: 23px;
 }
 
-ul {
+ul, ol {
     line-height: 25px;
 }
 
@@ -78,3 +81,18 @@ gatsby-highlight > code[class*="language-"],
     left: -2px;
 }
 
+.main-title {
+    font-size: 36px;
+    font-weight: 900;
+    font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+    font-size: 36px;
+    font-weight: 900;
+    font-family: 'Roboto', sans-serif;
+}
+
+h3 {
+    font-family: 'Roboto', sans-serif;
+}
