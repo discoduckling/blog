@@ -7,15 +7,29 @@ import {
 } from "../components/styled-components/PostOverview";
 import OverviewLayout from "../components/page-layouts/OverviewLayout";
 import { device } from "../components/media-query-breakpoints";
-import { useMediaQuery } from "react-responsive";
 
 const Home = props => {
   const { posts } = props;
-  const showLargePost = useMediaQuery({ query: device.laptop });
-  const topPost = showLargePost ? (
-    <PostOverviewLarge post={posts[0]} />
-  ) : (
-    <PostOverviewSmall post={posts[0]} />
+  const topPostLarge = (
+    <div
+      css={css`
+        display: none;
+        @media ${device.laptop} {
+          display: inline-block;
+        }
+      `}
+    >
+      <PostOverviewLarge post={posts[0]} />
+    </div>
+  );
+  const topPostSmall = (
+    <div css={css`
+      @media ${device.laptop} {
+        display: none;
+      }
+    `}>
+      <PostOverviewSmall post={posts[0]} />
+    </div>
   );
   return (
     <OverviewLayout selected={"Home"}>
@@ -55,9 +69,10 @@ const Home = props => {
               }
             `}
           >
-            {topPost}
+            {topPostLarge}
+            {topPostSmall}
             {posts.slice(1, 4).map(post => (
-              <PostOverviewSmall post={post} key={post.title}/>
+              <PostOverviewSmall post={post} key={post.title} />
             ))}
           </div>
         </div>

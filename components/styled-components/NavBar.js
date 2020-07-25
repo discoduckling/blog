@@ -88,7 +88,7 @@ const NavBarLink = ({ label, selected, to }) => {
         border-radius: 3px;
         background-color: ${selected ? Colors.orange : "white"};
         color: ${selected ? "white" : "black"};
-        visibility: hidden;
+        display: none;
         margin-left: 60px;
         :hover {
           background-color: ${selected
@@ -98,7 +98,7 @@ const NavBarLink = ({ label, selected, to }) => {
           transition: background-color 0.2s;
         }
         @media ${device.tablet} {
-          visibility: visible;
+          display: inline-block;
         }
       `}
     >
@@ -149,7 +149,7 @@ const NavBar = props => {
       <div
         css={css`
           @media ${device.tablet} {
-            visibility: hidden;
+            display: none;
           }
         `}
       >
@@ -233,20 +233,14 @@ const NavBar = props => {
           />
         </div>
         <div
-          style={{
-            display: "flex",
-            marginRight: 80,
-            width: 100,
-            justifyContent: "space-between"
-          }}
           css={css`
-            visibility: hidden;
+            display: none;
             @media ${device.tablet} {
               display: flex;
               margin-right: 80px;
               width: 100px;
               justify-content: space-between;
-              visibility: visible;
+              display: flex;
             }
           `}
         >
