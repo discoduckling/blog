@@ -74,7 +74,7 @@ as a child of a layout file of some kind. Perhaps a useful distinction here is t
 pages I will be generating, not the dynamically routed ones. Hence, I guess, the name get*Static*Props.
 
 So, at the bottom of your "static" pages, a function like this will be added:
-```js {5}
+```js {5} 
 export async function getStaticProps() {
   const blogPostsData = getSortedPostsData("blog");
   return {
