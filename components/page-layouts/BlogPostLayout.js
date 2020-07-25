@@ -67,7 +67,10 @@ const BlogPostLayout = frontMatter => {
                     `}
                   >
                     Image by{" "}
-                    <a href={frontMatter.image_web_addr}>
+                    <a
+                      href={frontMatter.image_web_addr}
+                      style={{ cursor: "pointer" }}
+                    >
                       {frontMatter.image_by}
                     </a>
                   </div>
