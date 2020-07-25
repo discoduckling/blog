@@ -6,7 +6,6 @@ import { useState } from "react";
 import { PostTitle, DateLabel } from "./Titles";
 import Link from "next/link";
 
-
 export const BlurbText = styled.div`
   font-size: 18px;
   font-weight: 200;
@@ -16,10 +15,11 @@ export const BlurbText = styled.div`
 `;
 
 export const PostOverviewSmall = props => {
-  const { date, title, blurb, postType, pid } = props;
+  const { post } = props;
+  const { date, title, blurb, postType, pid } = post;
   const [hover, setHover] = useState(false);
   return (
-    <div>
+    <div style={{ marginBottom: 40 }}>
       <div
         css={css`
           height: 5px;
@@ -61,18 +61,21 @@ export const PostOverviewSmall = props => {
 };
 
 export const PostOverviewLarge = props => {
-  const { date, title, blurb, postType, pid } = props;
+  const { post } = props;
+  const { date, title, blurb, postType, pid } = post;
   const [hover, setHover] = useState(false);
   return (
     <div
       css={css`
         margin-bottom: 100px;
+        max-width: 1200px;
+        min-width: 975px;
       `}
     >
       <div
         css={css`
           height: 5px;
-          width: ${hover ? 1200 : 168}px;
+          width: ${hover ? "100%" : "30%"};
           background-color: ${hover ? Colors.orange : Colors.highlightPurple};
           transition: width 0.3s ease-out, background-color 0.3s;
         `}
@@ -82,7 +85,6 @@ export const PostOverviewLarge = props => {
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           css={css`
-            width: 1200px;
             height: 414px;
             background-color: white;
             box-sizing: border-box;
@@ -93,7 +95,7 @@ export const PostOverviewLarge = props => {
           <div
             css={css`
               padding: 40px;
-              width: 600px;
+              width: 50%;
             `}
           >
             <DateLabel text={date} />
@@ -108,12 +110,10 @@ export const PostOverviewLarge = props => {
             </PostTitle>
             <BlurbText>{blurb}</BlurbText>
           </div>
-          <div
-            css={css`
-              width: 600px;
-              border: 1px solid black;
-            `}
-          ></div>
+          <img
+              src={post.image_path}
+              style={{ maxHeight: "100%" }}
+          />
         </div>
       </Link>
     </div>

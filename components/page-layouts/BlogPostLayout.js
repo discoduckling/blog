@@ -1,12 +1,15 @@
 /** @jsx jsx */
 import OverviewLayout from "./OverviewLayout";
-import { DateLabel, SubTitle } from "../styled-components/Titles";
+import { DateLabel } from "../styled-components/Titles";
 import React from "react";
-import Colors from "../colors";
 import { css, jsx } from "@emotion/core";
 
 const BlogPostTitle = ({ title, date }) => (
-  <div>
+  <div
+    css={css`
+      margin-left: 10px;
+    `}
+  >
     <div
       className={"main-title"}
       css={css`
@@ -26,28 +29,52 @@ const BlogPostLayout = frontMatter => {
         <div
           css={css`
             display: flex;
-            align-items: center;
-            flex-direction: column;
+            justify-content: center;
           `}
         >
-          <BlogPostTitle title={frontMatter.title} date={frontMatter.date} />
           <div
             css={css`
-              width: 900px;
-              margin-top: 70px;
+              display: flex;
+              flex-direction: column;
             `}
           >
+            <BlogPostTitle title={frontMatter.title} date={frontMatter.date} />
             <div
               css={css`
-                width: 900px;
-                height: 430px;
-                border: 1px solid grey;
-                margin-bottom: 70px;
+                max-width: 900px;
+                margin-top: 70px;
+                padding: 0 10px;
+                flex-grow: 1;
               `}
             >
-              image
+              <div
+                css={css`
+                  max-width: 900px;
+                  margin-bottom: 70px;
+                  width: 100%;
+                `}
+              >
+                <img
+                  src={frontMatter.image_path}
+                  style={{ maxWidth: "100%" }}
+                />
+                {frontMatter.image_by && (
+                  <div
+                    css={css`
+                      color: grey;
+                      font-style: italic;
+                      font-size: 12px;
+                    `}
+                  >
+                    Image by{" "}
+                    <a href={frontMatter.image_web_addr}>
+                      {frontMatter.image_by}
+                    </a>
+                  </div>
+                )}
+              </div>
+              <div>{content}</div>
             </div>
-            {content}
           </div>
         </div>
       </OverviewLayout>

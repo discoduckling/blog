@@ -1,9 +1,9 @@
 /** @jsx jsx */
-import Colors from "../../colors";
+import Colors from "../colors";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import { jsx, css } from "@emotion/core";
-import { device } from "../../media-query-breakpoints";
+import { device } from "../media-query-breakpoints";
 import { slide as Menu } from "react-burger-menu";
 import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
 
@@ -91,10 +91,12 @@ const NavBarLink = ({ label, selected, to }) => {
         visibility: hidden;
         margin-left: 60px;
         :hover {
-          background-color: ${selected ? Colors.orange : "rgba(250, 100, 0, 0.5)"};
+          background-color: ${selected
+            ? Colors.orange
+            : "rgba(250, 100, 0, 0.5)"};
           color: white;
-          transition: background-color .2s;
-        };
+          transition: background-color 0.2s;
+        }
         @media ${device.tablet} {
           visibility: visible;
         }
@@ -119,7 +121,9 @@ const NavBarBody = styled.div`
 
 const MenuLink = ({ label, to, selected }) => {
   const linkText = (
-    <span style={{ color: selected ? "white" : Colors.orange, cursor: "pointer" }}>
+    <span
+      style={{ color: selected ? "white" : Colors.orange, cursor: "pointer" }}
+    >
       {label}
     </span>
   );
@@ -235,6 +239,16 @@ const NavBar = props => {
             width: 100,
             justifyContent: "space-between"
           }}
+          css={css`
+            visibility: hidden;
+            @media ${device.tablet} {
+              display: flex;
+              margin-right: 80px;
+              width: 100px;
+              justify-content: space-between;
+              visibility: visible;
+            }
+          `}
         >
           <ExternalLink
             to={"https://twitter.com/_mitalee"}

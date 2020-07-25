@@ -1,11 +1,10 @@
 ---
-title: 'NextJS Part 3: Setting Up the Project'
+title: 'NextJS Part 3: Project Setup'
 date: '2020-07-19'
-blurb: "It's finally time to start our project. While the NextJS tutorial provides a comprehensive example of how to set
-up a project, I found that the setup I came up with varied slightly from the tutorial. In retrospect, these steps make total
-sense and are not difficult to understand, but it did take a while to figure out how to set up my project the way I 
-wanted to."
+blurb: "It's finally time to start our project. While the NextJS tutorial provides a thorough example of how to set
+up a project, I customized my own project setup slightly differently."
 layout: 'BlogPostLayout' 
+image_path: '/next-js-dev-part-1/nextjs_purple.png'
 ---
 
 It's finally time to get started on the actual project! The [NextJS](https://nextjs.org/docs/getting-started) docs are pretty comprehensive so I won't go
@@ -37,7 +36,13 @@ So let's do that.
 import CenteredImage from "../../components/styled-components/CenteredImage"
 
 <CenteredImage caption={"The basic starter home page"}>
-    <img src='/next-js-dev-part-3/basic_starter_index_page.png' alt='basic home page' width='500px'/>
+    <img src='/next-js-dev-part-3/basic_starter_index_page.png' 
+        alt='basic home page' 
+        width='500px'
+        style={{
+            maxWidth: "100%"
+        }}
+    />
 </CenteredImage>
 
 So far, so good.
@@ -77,7 +82,13 @@ export default Home;
 
 Now, the home page should look like this:
 <CenteredImage caption={"The `/` after a basic edit."}>
-    <img src='/next-js-dev-part-3/hello_world_home.png' alt='edited home page' width='500px'/>
+    <img src='/next-js-dev-part-3/hello_world_home.png' 
+        alt='edited home page' 
+        width='500px'
+        style={{
+            maxWidth: '100%'
+        }}
+        />
 </CenteredImage>
 
 For now, the simplest way to think about the static route pages is as React components. For instance,
@@ -408,7 +419,7 @@ server restarts.
 
 Navigating to `localhost:3000/blog/first-post` should now show something like this:
 <CenteredImage caption={"`/blog/first-post` with mdx!"}>
-    <img src='/next-js-dev-part-3/mdx-test.png' alt='rendrered mdx' width='500px'/>
+    <img src='/next-js-dev-part-3/mdx-test.png' alt='rendrered mdx' style={{maxWidth: '100%'}} />
 </CenteredImage>
 
 You should also be able to navigate to `/blog/second-post` and `/blog/third-post` to see the content
