@@ -1,0 +1,368 @@
+---
+title: 'NextJS Part 4: Storybook Integration'
+date: '2020-07-26'
+blurb: 'Storybook is a great tool for accelerating the iteration of component development in React projects.' 
+layout: 'BlogPostLayout' 
+image_path: '/next-js-dev-part-1/nextjs_purple.png'
+---
+
+<div style={{color: 'blue'}}>Building a NextJS Blog: Part 4</div>
+
+The project file structure has been organized in a NextJS-friendly way, and we can now rest assured that
+routing will work the way we expect it to. The next steps are to flesh out this site with React components
+so it looks a little bit better than it currently does. In order to do that, I prefer to use [Storybook](https://storybook.js.org/).
+
+## What is Storybook?
+Storybook is a dev tool for speeding up the process of developing React components. Once installed integrated into
+your React project, it can be used to take components directly from your project and create a separate "playground"
+for fleshing out these components. I almost always use storybook when I'm working on a new feature of a large
+React project because it allows me to focus solely on the feature at a component level. Furthermore, I've found
+that Storybook encourages "separation of concerns" when it comes to isolating the functionality of a component
+from the data it needs. This, in turn, leads to the development of more modular or atomic pieces of code that
+can be separated from their data sources, making them reusable.
+
+Another advantage of Storybook is very fast hot reloading. When I'm working with a complex UI, running in Docker, with
+many process running to support it, hot reloading the UI takes time. Even if it's a matter of seconds, those seconds
+become very noticeable when I'm working on simply improving css or responsiveness of a component. Isolating the
+components from the rest of the UI using Storybook helps speed up the iterative process of component development.
+
+# Dev Setup
+## Installing Storybook
+Storybook has plenty of [instructions](https://storybook.js.org/docs/guides/guide-react/) on how to automatically or manually install Storybook into
+a project. Basically, the automatic way to get Storybook working in your NextJS project is to run the
+following command from the root of the project:
+```shell script
+npx -p @storybook/cli sb init
+```
+This initialization process will create two directories, `stories` and `.storybook` in the root of the project.
+We will be writing our stories in the `stories` directory. Storyboook customizations are often added to the
+`storybook` directory.
+
+## Component Development Roadmap: Deciding what components we need and writing stories for them
+Now that Storybook has been installed, it's a good time to outline the components we might need for the blog.
+A good starting list would be:
+1. a nav bar of some kind to navigate between pages (`<NavBar />`)
+2. page title (`<PageTitle />`)
+3. post title (`<PostTitle />`)
+4. date label (`<DateLabel />`)
+5. summary component (to show list of blog posts) (`<PostOverview />`)
+5. a general layout for all the pages (`<OverviewLayout />`) 
+6. layout for a blog post (`<BlogPostLayout />`)
+
+## Installing Emotion for inline styling
+NextJS has support for css modules right out of the box for styling individual components, but I prefer
+using [Emotion](https://emotion.sh/docs/introduction) for inline styling. So I'll start by installing this 
+package into my project:
+```shell script
+npm i @emotion/core
+```
+
+## Organizing the new components
+I'm also going to make a directory called `styled-components` to house all of my custom components for this project:
+```shell script
+mkdir components/styled-components
+```
+
+The `components` directory should look like this now:
+```text {2,3}
+components
+├── page-layouts
+│   └── BlogPostLayout.js
+└── styled-components
+```
+Remember, we had made a `BlogPostLayout` component in the previous section to test out the site.
+
+# Beginning the component development process
+
+## Creating the components
+I highlighted some components above that would be a good starting point for this blog. I'll start by creating
+files for these components:
+```shell script
+cd components/styled-components
+touch NavBar.js Text.js PostOverview.js
+cd ../page-layouts
+touch OverviewLayout.js
+```
+
+I've already created a component for the blog post layout, so I didn't need to do that here. 
+I also decided to house all of the text components 
+(`PageTitle`, `PostTitle`, and `DateLabel`) in the same file called `Text.js`.
+
+## Initializing the stories for the new components
+My usual process is to create a different story file for each of the components. Within each story file, you 
+can define different stories depending on the different states of the component being described in the file.
+For this project, this means creating 7 stories:
+```shell script
+cd stories
+touch 2-NavBar.stories.js 3-PageTitle.stories.js 4-PostTitle.stories.js 5-DateLabel.stories.js
+touch 6-PostOverview.stories.js 7-OverviewLayout.stories.js 8-BlogPostLayout.stories.js
+```
+
+The reason I started with `2` instead of `0` with my `NavBar` story file is because Storybook
+initializes this directory with two example stories: `0-Welcome.stories.js` and `1-Button.stories.js`. I like
+leaving these stories in, especially if you've never used Storybook before, because they can be a good reference
+for how to write stories.
+
+I will walk through the process of creating a story for the `NavBar` component for the sake of brevity.
+Although you don't have to use Storybook for your development process, I highly recommend it.
+
+### Writing a story for `<NavBar />`
+As a placeholder for now, I'll add the following code to the body of `NavBar.js` so I have a default export
+to play with in `2-NavBar.stories.js`.
+```js
+import React from "react";
+
+const NavBar = () => {
+  return <div>NavBar</div>;
+};
+
+export default NavBar;
+```
+
+Then, in `2-NavBar.stories.js`, I'll add the following code to create my first story:
+```js
+import React from "react";
+import NavBar from "../components/styled-components/NavBar";
+
+export default {
+  title: "NavBar",
+  component: NavBar
+};
+
+export const BasicExample = () => {
+  return <NavBar />;
+};
+```
+Now, if you run `yarn storybook` and navigate to `localhost:6006`, you should see 3 stories, including the `NavBar` story:
+import CenteredImage from "../../components/styled-components/CenteredImage"
+
+<CenteredImage caption={"NavBar story wired in"}>
+    <img src='/next-js-dev-part-4/navbar_story_1.png' 
+        alt='navbar story beginning' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+## Fleshing out the `<NavBar />`
+For now, I'm only going to put a link to the home page (`/` route) in the nav bar. 
+
+I added the following code to `NavBar.js`:
+```js
+/** @jsx jsx */
+import { jsx, css } from "@emotion/core";
+
+const NavBarLink = ({ text }) => {
+  return (
+    <div
+      css={css`
+        font-size: 20px;
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+      `}
+    >
+      {text}
+    </div>
+  );
+};
+
+const NavBar = () => {
+  return (
+    <div
+      css={css`
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
+        height: 60px;
+        background-color: DodgerBlue;
+      `}
+    >
+      <NavBarLink text={"Home"} />
+    </div>
+  );
+};
+
+export default NavBar;
+```
+
+And now, choosing the NavBar story in storybook should look like this:
+<CenteredImage caption={"NavBar after some basic styling"}>
+    <img src='/next-js-dev-part-4/navbar_story_2.png' 
+        alt='navbar story beginning' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+## Creating the `<PostOverview />` component
+I started by first creating the titles I'll need in `Text.js`:
+```js
+// Text.js
+/** @jsx jsx */
+import { jsx, css } from "@emotion/core";
+
+export const PostTitle = ({ title }) => {
+  return (
+    <div
+      css={css`
+        font-size: 24px;
+      `}
+    >
+      {title}
+    </div>
+  );
+};
+
+export const PageTitle = ({ title }) => {
+  return (
+    <div
+      css={css`
+        font-size: 40px;
+        text-decoration: underline;
+        color: DodgerBlue;
+      `}
+    >
+      {title}
+    </div>
+  );
+};
+
+export const DateLabel = ({ date }) => {
+  return (
+    <div
+      css={css`
+        color: gray;
+      `}
+    >
+      {date}
+    </div>
+  );
+};
+```
+
+I'll create `<PostOverview />` by putting these components together:
+```js
+/** @jsx jsx */
+import { jsx, css } from "@emotion/core";
+import { DateLabel, PostTitle } from "./Text";
+
+const PostOverview = ({ title, date }) => {
+  return (
+    <div css={css`
+      height: 70px;
+    `}>
+      <PostTitle title={title} />
+      <DateLabel date={date} />
+    </div>
+  );
+};
+
+export default PostOverview;
+```
+
+I start with the smallest components and use that to cobble together the larger ones.
+Now that I have this `<PostOverview />` component ready, I can use it in my Storybook
+story to mock up an example home page where I show all of my posts. The next
+component to work on will be `<OverviewLayout />`.
+
+## Constructing the main layout: `<OveviewLayout />`
+At this point, the only common things I want to show on all of my pages is the `NavBar` and
+the page title. Therefore, I'll include it in these in my common layout component. I'll also 
+add some styling to make all of my pages look consistent (i.e. consistent padding). Consistency
+between components will of course make the site as a whole look more polished, but it will also
+help make the code "DRY"-er. By thinking of common code between components, we can more this code
+higher up in the tree to make sure that we can reuse it wherever necessary. This helps keep code
+duplication to a minimum.
+
+I edited `OverviewLayout.js` to look like this:
+```js
+/** @jsx jsx */
+import { jsx, css } from "@emotion/core";
+import NavBar from "../styled-components/NavBar";
+import { PageTitle } from "../styled-components/Text";
+
+const OverviewLayout = props => {
+  const { pageTitle } = props;
+  return (
+    <div>
+      <NavBar />
+      <div
+        css={css`
+          padding: 20px 40px;
+        `}
+      >
+        <PageTitle title={pageTitle} />
+        <div
+          css={css`
+            margin-top: 30px;
+          `}
+        >
+          {props.children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OverviewLayout;
+```
+
+## Updating `<BlogPostLayout />`
+Now that we have finished making an `<OverviewLayout />` component, this can be reused in 
+`<BlogPostLayout />` to maintain consistency.
+
+This is the current version of `BlogPostLayout.js`, as defined in the previous post:
+```js {7,8}
+import React from "react";
+
+const BlogPostLayout = frontMatter => {
+  return ({ children: content }) => {
+    return (
+      <div>
+        <div style={{ color: "red" }}>{frontMatter.title}</div>
+        <div style={{ color: "green" }}>{content}</div>
+      </div>
+    );
+  };
+};
+
+export default BlogPostLayout;
+```
+
+We know that `<OverviewLayout />` will take the title as a prop, and we can put the content
+this component gets from `next-mdx-enhanced` in the content of `OverviewLayout`. So we can change
+this component to look like this:
+
+```js
+import React from "react";
+import OverviewLayout from "./OverviewLayout";
+
+const BlogPostLayout = frontMatter => {
+  return ({ children: content }) => {
+    return (
+      <OverviewLayout pageTitle={frontMatter.title}>{content}</OverviewLayout>
+    );
+  };
+};
+
+export default BlogPostLayout;
+```
+
+At this point, if you run `yarn dev` and navigate to `localhost:3000/blog/first-post`,
+the sample blog post page should look like this:
+<CenteredImage caption={"The revamped blog page"}>
+    <img src='/next-js-dev-part-4/navbar_story_3.png' 
+        alt='updated blog layout' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+# Next Steps
+In the next post, I'll talk about wiring in these components to our NextJS site. After that,
+we'll be ready to *finally* deploy!
