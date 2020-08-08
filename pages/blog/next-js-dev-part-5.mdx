@@ -1,0 +1,418 @@
+---
+title: 'NextJS Part 5: Wiring Everything Together'
+date: '2020-08-08'
+blurb: "It's finally time to wire everything together." 
+layout: 'BlogPostLayout' 
+image_path: '/next-js-dev-part-1/nextjs_purple.png'
+---
+
+<div style={{color: 'blue'}}>Building a NextJS Blog: Part 5</div>
+
+We've created the scaffolding for our project, set up Storybook integration for rapid
+iteration, and create custom components for this blog. It's finally time to put it all together.
+
+## Get the nav bar to show up on all the pages
+By the end of the last post, we had created a simple nav bar and connected it to the blog post layout:
+
+import CenteredImage from "../../components/styled-components/CenteredImage"
+
+<CenteredImage caption={"/blog/first-post"}>
+    <img src='/next-js-dev-part-5/blog_first_post.png' 
+        alt='/blog/first-post' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+However, there are a couple more things we need to do to make this nav bar useful:
+1. add it to the home page
+2. wire the nav link to routing
+
+### Adding the nav bar to the home page
+We have already added this nav bar component to our `OverviewLayout.js`, which we should
+use for all of the pages on this site in order to standardize the layout on all of the 
+site's pages. This is the advantage of using layouts, we don't need to reinvent the 
+wheel each time for each page and it gives us a single source to tweak the layout
+for every page on the site.
+
+Before, tweaking `index.js` to use `OverviewLayout.js`, here's a reminder of the current
+state of `index.js`:
+```js
+import React from "react";
+
+const Home = (props) => {
+    return <div>This is my home page!</div>
+}
+
+export default Home;
+```
+
+Pretty basic. For now, let's keep the `div` with the text as the main content of this page (
+this will change once we wire in static props to the home page). Bringing in the layout file,
+`index.js` will now look like this:
+```js
+import React from "react";
+import OverviewLayout from "../components/page-layouts/OverviewLayout";
+
+const Home = props => {
+  return (
+    <OverviewLayout>
+      <div>This is my home page!</div>
+    </OverviewLayout>
+  );
+};
+
+export default Home;
+```
+Since we are using the same parent template for both the home page and the blog posts,
+the nav bar should be rendered on both types of pages:
+<CenteredImage caption={"The new home page with nav bar"}>
+    <img src='/next-js-dev-part-5/home_navbar.png' 
+        alt='`/` with nav bar' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+### Wiring in the nav link 
+Currently, clicking on `/Home` in the nav bar doesn't do anything. Ideally, clicking on this
+link will take the user back to the home page.
+
+As I've mentioned before, an advantage of using a static site generator, like NextJS, is that we
+don't need to necessarily set up routing. NextJS handles this for us. However, since NextJS is doing
+the complicated routing behind the scenes, we need to use their "link" component that is already
+set up to work with their routing system. NextJS provides a `Link` export from `next/link` that
+we can use in our nav bar to make navigation function as intended.
+
+To implement nav functionality in the nav bar, we'll need to tweak `NavBar.js`:
+```js {2,4,15,31}
+...
+import Link from "next/link";
+
+const NavBarLink = ({ text, to }) => {
+  return (
+    <div
+      css={css`
+        font-size: 20px;
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+      `}
+    >
+      <Link href={to}>{text}</Link>
+    </div>
+  );
+};
+
+const NavBar = () => {
+  return (
+    <div
+      css={css`
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
+        height: 60px;
+        background-color: DodgerBlue;
+      `}
+    >
+      <NavBarLink text={"Home"} to={"/"}/>
+    </div>
+  );
+};
+...
+```
+
+I've modified the highlighted lines. The `Link` component supplied by NextJS takes an `href`
+attribute. The value of`href` is just the route that the link should direct to. In this case,
+clicking on the 'Home' link should redirect the user to the home page. Since I'm trying to keep
+things as flexible as possible, I'm supplying the value for `href` via a prop in `NavBarLink` (see line
+31). This way, I can add more links to the nav bar and add routes as I go. 
+
+Now, to test this, if we navigate to `/blog/first-post`, we should be able to click on the "Home" link,
+and be directed back to the home page. One way navigation back to the home page works! But, how can
+we get to the blog post via links?
+
+### Adding dates to the blog posts
+Up until now, the front matter for our sample blog posts have been pretty simple:
+```markdown
+---
+title: 'My first post'
+layout: 'BlogPostLayout'
+---
+```
+
+In order to sort the data by date, I need to add a date to the front matter:
+
+```markdown
+---
+title: 'My first post'
+layout: 'BlogPostLayout'
+date: '2020-07-01'
+---
+```
+
+## Show all posts on the home page: injecting static props
+We need a way to connect the home page to data on all available blog posts. As a new post is added
+to the project, it will be added to the home page as a link. To do this, we need to
+do a couple things:
+1. Create a function that parses through our files and returns an array
+of available blog posts.
+2. Inject this array data into the home page (`index.js`) component. 
+
+### Writing a utility for parsing the file structure
+The goal of these utility functions is to parse through the project directory and organize blog post
+files into an array. I use the front matter from my `mdx` files to get the blog post titles and
+dates, and then I sort the posts by the date (because I want to display the posts index on the home page
+in order from newest to oldest). 
+
+I've chosen to house these functions in a new directory called `lib`, in a file called `utils.js`.
+From the root of the project:
+```shell script
+mkdir lib
+touch lib/utils.js
+```
+
+Then, I added the following to the body of `utils.js`
+```js
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+
+const _getPostsFromPostTypeDirectory = (postsDirectory, dir) => {
+  let files = [];
+  let currentDirectory = path.join(postsDirectory, dir);
+  let filesInDirectory = fs.readdirSync(currentDirectory).filter(d => d.includes('.md'))
+  filesInDirectory.forEach(f => {
+      let fileContents = fs.readFileSync(path.join(currentDirectory, f));
+      const matterResult = matter(fileContents);
+      let fileInfo = {
+        fileName: f,
+        ...matterResult.data,
+        postType: dir,
+        pid: f.replace(/\.mdx?$/, "")
+      };
+      files = [...files, fileInfo];
+  });
+  return files;
+};
+
+export function getSortedPostsData(dirname = null) {
+  let postsDirectory = path.join(process.cwd(), "pages");
+  let allPosts = [];
+  // if no dirname is given, get all posts
+  if (!dirname) {
+    // get available directory names
+    const allDirNames = fs
+      .readdirSync(postsDirectory)
+      .filter(d => !d.includes("."));
+    // make a list of posts from all the posts directories
+    allDirNames.forEach(dir => {
+      // open directory
+      let files = _getPostsFromPostTypeDirectory(postsDirectory, dir);
+      if (!!files.length > 0) {
+        allPosts = [...allPosts, ...files];
+      }
+    });
+  } else {
+    let files = _getPostsFromPostTypeDirectory(postsDirectory, dirname);
+    if (!!files.length > 0) {
+      allPosts = [...allPosts, ...files];
+    }
+  }
+  // if dirname is given, use that name to get posts from that directory
+  return allPosts.sort((a, b) => {
+    if (a.date < b.date) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+}
+```
+
+There's a lot going on here, so I'll give a cursory overview of each of these three functions:
+
+### `_getPostsFromPostTypeDirectory`
+This is a helper function that I will use in the main function `getSortedPostsData`. This function
+takes two arguments, `postsDirectory` and `dir`. These two values are used to create a file path
+that will be used to read files. For instance, the `pages` directory will
+hold different types of posts, `blog` posts, maybe `project` posts, etc. Therefor,
+the structure of `pages` could look like this:
+```text
+pages
+├── blog
+│   ├── blog_post_1.js
+│   ├── first-post.mdx
+│   ├── second-post.mdx
+│   └── third-post.mdx
+├── projects 
+│   ├── first-project.js
+│   ├── second-project.mdx
+│   └── third-project.mdx
+├── blog.js
+├── index.js
+├── projects.js
+└── workflows.js
+```
+
+The files that I want to show up in my array are only the files in the `blog` and `project`
+directories. Therefore, I need to get the directories in the `pages` directory,
+and then iterate through each of these subdirectories to make a collection of 
+the posts I'm interested in.
+
+### `getSortedPostsData`
+This function first gets the names of the directories we need to iterate through.
+Then it uses the `_getPostsFromPostTypeDirectory` to get the front matter data
+from these files. Finally, it will return the array of files in order from newest to oldest
+based on the date in the front matter.
+
+
+### Injecting the array of posts into `index.js` via `getStaticProps`
+Okay, so I have a way of getting posts data based on the files available in my `pages` directory.
+Now, it's time to inject this array into `index.js` as a prop in order to
+display this array on the home page. NextJS offers a way to do this via
+`getStaticProps`, a special NextJS function for injecting props into any page.
+
+I can edit my `index.js` file to look like this:
+```js {3,6,14-21}
+import React from "react";
+import OverviewLayout from "../components/page-layouts/OverviewLayout";
+import { getSortedPostsData } from "../lib/utils";
+
+const Home = props => {
+  console.log(props);
+  return (
+    <OverviewLayout>
+      <div>This is my home page!</div>
+    </OverviewLayout>
+  );
+};
+
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData();
+  return {
+    props: {
+      posts: allPostsData
+    }
+  };
+}
+
+export default Home;
+```
+
+On lines 14-21, I've added the `getStaticProps` function, and I've edited
+the body of this function to use my `getSortedPostsData` utility. The data
+returned by this utility function will be inected into `Home` via a prop
+called `posts` (line 18). The `console.log` on line 6 will output the available
+props for `Home`, so you can see the connection between the returned value of
+`getSortedPostsData` and the props injected into the default export from this file,
+a.k.a `Home`.
+
+In order to display the array of posts on my home page, I'm going to use my
+`PostOverview` component. The contents of `index.js` should look like this now:
+```js
+import React from "react";
+import OverviewLayout from "../components/page-layouts/OverviewLayout";
+import { getSortedPostsData } from "../lib/utils";
+import PostOverview from "../components/styled-components/PostOverview";
+
+const Home = props => {
+  const { posts } = props;
+  return (
+    <OverviewLayout>
+      {posts.map(p => (
+        <PostOverview title={p.title} date={p.date} key={p.pid} />
+      ))}
+    </OverviewLayout>
+  );
+};
+
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData();
+  return {
+    props: {
+      posts: allPostsData
+    }
+  };
+}
+
+export default Home;
+```
+
+The home page should now look like this, showing all of the posts we have in descending order by date:
+<CenteredImage caption={"The new home page with nav bar"}>
+    <img src='/next-js-dev-part-5/home_posts.png' 
+        alt='`/` with posts' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+#### Make the post titles clickable links
+As of right now, the posts should show up on the home page, but they aren't links. In order
+to fix this, I'm going to turn the `PostTitle` into a link using the `Link` component build in
+to NextJS:
+```js {2,9-11}
+// Text.js
+export const PostTitle = ({ title, to }) => {
+  return (
+    <div
+      css={css`
+        font-size: 24px;
+      `}
+    >
+      <Link href={to}>
+        <a>{title}</a>
+      </Link>
+    </div>
+  );
+};
+```
+
+The highlighted lines have been changed to convert the post title into a link. However,
+just changing the component here is not enough. We are now supplying a `to` prop to `PostTitle`
+that will be used as the `href` attribute on the nav link. This means we need to add this as a
+prop to `PostOverview` as well, so it can be passed through `PostOverview` to `PostTitle`:
+```js {2,7}
+// PostOverview.js
+const PostOverview = ({ title, date, to }) => {
+  return (
+    <div css={css`
+      height: 70px;
+    `}>
+      <PostTitle title={title} to={to}/>
+      <DateLabel date={date} />
+    </div>
+  );
+};
+```
+
+#### Adding a routing address to our posts data
+The last missing piece is to add data to our posts array (in `index.js`) that we can use
+as the address to navigate to when a post is clicked on. In other words, we need to associate
+each post in the array with a link to the address for that post. We can do this by using the `postType` and
+`pid` data fields for each post in our post array to construct a route for each post link:
+```js {11}
+// index.js
+const Home = props => {
+  const { posts } = props;
+  return (
+    <OverviewLayout>
+      {posts.map(p => (
+        <PostOverview
+          title={p.title}
+          date={p.date}
+          key={p.pid}
+          to={`/${p.postType}/${p.pid}`}
+        />
+      ))}
+    </OverviewLayout>
+  );
+};
+``` 
+In line 10, I've added a `to` prop that will connect each post with the route for that post page. Now,
+clicking on a post title should take us to correct post!
