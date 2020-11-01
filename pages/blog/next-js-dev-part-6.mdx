@@ -1,0 +1,284 @@
+---
+title: 'NextJS Part 6: Deploying a NextJS Site'
+date: '2020-11-01'
+blurb: "Vercel makes deploying a NextJS project pain free and slick." 
+layout: 'BlogPostLayout' 
+image_path: '/next-js-dev-part-1/nextjs_purple.png'
+---
+
+<div style={{color: 'blue'}}>Building a Next.js Blog: Part 6</div>
+
+The basic site has been created, and everything is wired and ready to go. But how do we deploy
+and share our new creation? The creators of Next.js have also created a platform called 
+[Vercel](https://vercel.com/) that works seamlessly with Next.js when it comes to deployment.
+It's very easy to integrate with GitHub, which is the Git provider I will be using in this
+example. Best of all, it's free. Even though it's free, Vercel has a rich feature set and getting
+some exposure to the platform will help in the future if you ever want to use it for a more
+involved project. 
+
+### Getting set up with GitHub
+
+When you initialize your app using `create-next-app`, it automatically sets up Git for the project.
+Before continuing, make sure you've committed all of your changes to your `master` branch.
+
+
+Now, it's just a question of pushing the project to a remote repo in GitHub (you could also use GitLab
+or Bitbucket). The end goal is to set up a continuous deployment pipeline using GitHub and Vercel's
+integration with GitHub to detect changes in the remote repo. When changes are detected on a feature branch
+(i.e. `develop`), Vercel will deploy the site to a "preview" site. On the other hand, when changes
+are detected on the `master` branch, Vercel will deploy the site to production.
+
+#### Make a remote repo for the project
+
+Once you have logged in to your account, make a new repo for your project. Here's an example of 
+how I filled out the "new repository" form: 
+
+import CenteredImage from "../../components/styled-components/CenteredImage"
+
+<CenteredImage caption={"Creating a new repo"}>
+    <img src='/next-js-dev-part-6/create_repo.png' 
+        alt='Creating a new repo in GitHub' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+Once you've created your new GitHub repo, the next screen will show you directions for the
+various ways to get your local directories linked to the remote repository you just
+created. We already have a local directory, so follow the directions on pushing an 
+existing directory to github:
+```shell script {1}
+git remote add origin https://github.com/discoduckling/example-blog.git
+git branch -M main
+git push -u origin main
+```
+
+Obviously, the URL in line 1 will be different for your repo. Line 2 is renaming 
+the master branch (which should be your current branch since we haven't created any
+feature branches yet) to `main` instead of `master`. Finally, in line 3, the local
+repo on the (now) `main` branch is pushed to the remote repo.
+
+#### Create branches
+As I mentioned before, Vercel can detect changes on both the `main` branch other 
+non-`main` branches, once Vercel is integrated with your remote repo. What's the
+point of having non-`main` branches, like "feature" or `develop` branches? Having
+a buffer between non-tested changes and a production site is a best practice 
+because it allows a developer to test their changes on a deployed site to see
+if the deployed changes match what they had in mind. Though most problems can 
+be caught by just testing changes locally, i.e. visiting `localhost:3000` while
+the Next.js app server is running, deployment can add unexpected behavior to the
+app. Furthermore, deploying to a test site can also give devs the opportunity to
+access the test site from different devices, allowing for even more robust
+test cases. For my Next.js site, I found this particularly helpful when I was
+working on styling for mobile. I could deploy my styling to a feature branch or
+my `develop` branch and then access the site via my phone or tablet to get an idea
+of what my changes look like on all the devices I had to test with.
+
+
+For Next.js projects, I like to have at least two branches:
+* `main`: this is the main or "master" branch, and changes here will be reflected on our production site
+* `develop`: this is the last test stage before pushing to master
+
+And then I'll have a feature branch, like `new-post` or `mobile-header`. The workflow will
+look something like this:
+
+<CenteredImage caption={"Workflow Overview"}>
+    <img src='/next-js-dev-part-6/git_workflow.png' 
+        alt='Worfkow Overview' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+For now, just create a `develop` branch locally and push the branch to
+your remote repo. We can use the `develop`
+branch to test deploying changes to a preview site before deploying to production.
+
+```shell script
+git checkout -b develop
+git push origin develop
+```
+
+### Getting set up with Vercel
+First, create a new (free) account at [Vercel](https://vercel.com/).
+
+Once your account has been created, you can import a project.
+
+<CenteredImage caption={"Import a new project into Vercel"}>
+    <img src='/next-js-dev-part-6/import_project.png' 
+        alt='Import a new project into Vercel' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+Continue by choosing to import an existing GitHub project:
+
+<CenteredImage caption={"Import the existing GitHub project"}>
+    <img src='/next-js-dev-part-6/vercel_github_import.png' 
+        alt='Import the existing GitHub project' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+Then, copy and paste your GitHub repo's url into this dialog (see? super easy integration):
+
+<CenteredImage caption={"Paste in your GitHub repo URL to import the project"}>
+    <img src='/next-js-dev-part-6/import_url.png' 
+        alt='Paste GitHub repo URL to import project' 
+        style={{
+            maxWidth: "75%"
+        }}
+    />
+</CenteredImage>
+
+In the next screen, you can set up some project config options if there is something
+specific you'd like to tweak. I didn't tweak anything for this project:
+
+<CenteredImage caption={"No extra config needed for this project"}>
+    <img src='/next-js-dev-part-6/project_settings.png' 
+        alt='No extra config needed for this project' 
+        style={{
+            maxWidth: "75%"
+        }}
+    />
+</CenteredImage>
+
+After you click "Deploy", this pretty cool screen comes up where it displays
+the progress of the deployment:
+
+<CenteredImage caption={"Building the project"}>
+    <img src='/next-js-dev-part-6/building_project.png' 
+        alt='Building the project' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+
+You can now visit your production site!
+
+### A walkthrough of the Vercel dashboard
+If you go to your Vercel home page, you will see your Vercel dashboard. Here's an example of mine: 
+
+<CenteredImage caption={"My Vercel dashboard"}>
+    <img src='/next-js-dev-part-6/vercel_dashboard.png' 
+        alt='My Vercel dashboard' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+The example project I _just_ deployed is `example-blog`. The left half of the dashboard displays
+all of your Vercel projects, while the right side shows any recent deployments or Vercel-related
+activity for your projects. 
+
+In the info box for `example-blog`, we see the URLs for the production version of our site. You
+can also click the `Visit` button, and it will open a new tab with the production site. By clicking
+on `example-blog`, you will head to the details page for this project. Here, you'll find a preview
+of the production deployment as well as the preview deployments. I currently have no preview
+deployments because I have only pushed to my `main` branch (which Vercel considers the production
+branch). In the next section, we'll make changes to the site and push the changes to `develop`, and this
+should trigger a preview deployment. 
+
+### Walking through the workflow for making changes 
+For the preview deployment, the change I will be making is adding a new post.
+
+#### Test changes locally
+First, create a new branch, which I'll call `new-post`.
+
+```shell script
+git checkout -b new-post
+```
+
+Then, create the new post. From the root directory of the project:
+```shell script
+touch pages/blog/fourth-post.mdx
+```
+
+Next, populate the new post with some content. I'm just going to add some basic content for now:
+
+```markdown
+---
+title: 'My fourth post'
+layout: 'BlogPostLayout'
+date: '2020-11-01'
+---
+
+This is a new post to test deploying via Vercel.
+```
+
+Now, let's test these changes by running the project locally:
+```markdown
+npm run dev
+```
+
+Cool, it looks like the changes look okay locally:
+<CenteredImage caption={"Testing out a new post"}>
+    <img src='/next-js-dev-part-6/new_test_post.png' 
+        alt='Testing out a new post' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+
+#### Commit the changes and merge them into `develop` 
+Since the changes look okay locally, I feel confident enough to commit them
+and merge the changes from `new-post` into `develop`.
+
+```shell script
+git add pages/*
+git commit -m "Create my fourth post"
+git checkout develop
+git merge new-post
+```
+
+At this point, you could test the changes out locally again for peace of mind.
+I'm being impatient, so I'm going to fast forward and push these changes
+to my remote `develop` branch:
+```shell script
+git push origin develop
+```
+
+#### Monitor the deployment online
+After you push your changes to the remote `develop` branch, you can actually
+get a glimpse of the deployment status on your repo page:
+<CenteredImage caption={"Our preview deployment is pending"}>
+    <img src='/next-js-dev-part-6/pending_preview.png' 
+        alt='Our preview deployment is pending' 
+        style={{
+            maxWidth: "50%"
+        }}
+    />
+</CenteredImage>
+
+Back on the Vercel dashboard for this project, once the preview deployment is ready,
+you'll see some info under `Preview Deployments`:
+<CenteredImage caption={"Vercel's preview deployment info"}>
+    <img src='/next-js-dev-part-6/vercel_preview.png' 
+        alt='Vercel preview deployment dashboard' 
+        style={{
+            maxWidth: "100%"
+        }}
+    />
+</CenteredImage>
+
+#### Testing out the changes
+Now, if you navigate to your preview deployment site, you should see the fourth
+post listed there. Clicking on it should show the sparse content of the post.
+In a separate tab, navigate to the production site for your project. The fourth
+post should not be visible on the production site because we haven't pushed
+these new changes to `main`. If you're ready to deploy your new post to production,
+merge in `develop` into `main`, and Vercel will take care of the rest!
+
+
+
