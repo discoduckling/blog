@@ -16,7 +16,7 @@ example. Best of all, it's free. Even though it's free, Vercel has a rich featur
 some exposure to the platform will help in the future if you ever want to use it for a more
 involved project. 
 
-### Getting set up with GitHub
+## Getting set up with GitHub
 
 When you initialize your app using `create-next-app`, it automatically sets up Git for the project.
 Before continuing, make sure you've committed all of your changes to your `master` branch.
@@ -28,7 +28,7 @@ integration with GitHub to detect changes in the remote repo. When changes are d
 (i.e. `develop`), Vercel will deploy the site to a "preview" site. On the other hand, when changes
 are detected on the `master` branch, Vercel will deploy the site to production.
 
-#### Make a remote repo for the project
+### Make a remote repo for the project
 
 Once you have logged in to your account, make a new repo for your project. Here's an example of 
 how I filled out the "new repository" form: 
@@ -59,7 +59,7 @@ the master branch (which should be your current branch since we haven't created 
 feature branches yet) to `main` instead of `master`. Finally, in line 3, the local
 repo on the (now) `main` branch is pushed to the remote repo.
 
-#### Create branches
+### Create branches
 As I mentioned before, Vercel can detect changes on both the `main` branch other 
 non-`main` branches, once Vercel is integrated with your remote repo. What's the
 point of having non-`main` branches, like "feature" or `develop` branches? Having
@@ -101,7 +101,7 @@ git checkout -b develop
 git push origin develop
 ```
 
-### Getting set up with Vercel
+## Getting set up with Vercel
 First, create a new (free) account at [Vercel](https://vercel.com/).
 
 Once your account has been created, you can import a project.
@@ -188,10 +188,10 @@ deployments because I have only pushed to my `main` branch (which Vercel conside
 branch). In the next section, we'll make changes to the site and push the changes to `develop`, and this
 should trigger a preview deployment. 
 
-### Walking through the workflow for making changes 
+## Walking through the workflow for making changes 
 For the preview deployment, the change I will be making is adding a new post.
 
-#### Test changes locally
+### Test changes locally
 First, create a new branch, which I'll call `new-post`.
 
 ```shell script
@@ -231,7 +231,7 @@ Cool, it looks like the changes look okay locally:
 </CenteredImage>
 
 
-#### Commit the changes and merge them into `develop` 
+### Commit the changes and merge them into `develop` 
 Since the changes look okay locally, I feel confident enough to commit them
 and merge the changes from `new-post` into `develop`.
 
@@ -249,7 +249,7 @@ to my remote `develop` branch:
 git push origin develop
 ```
 
-#### Monitor the deployment online
+### Monitor the deployment online
 After you push your changes to the remote `develop` branch, you can actually
 get a glimpse of the deployment status on your repo page:
 <CenteredImage caption={"Our preview deployment is pending"}>
@@ -272,7 +272,7 @@ you'll see some info under `Preview Deployments`:
     />
 </CenteredImage>
 
-#### Testing out the changes
+### Testing out the changes
 Now, if you navigate to your preview deployment site, you should see the fourth
 post listed there. Clicking on it should show the sparse content of the post.
 In a separate tab, navigate to the production site for your project. The fourth
